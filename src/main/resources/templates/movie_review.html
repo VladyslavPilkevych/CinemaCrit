@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Reviews</title>
+</head>
+<body>
+<h1>Movie Reviews</h1>
+<div>
+    <h2>Comments:</h2>
+    <ul>
+        <li th:each="review : ${reviews}">
+            <p th:text="${review.username}"></p>
+            <p>Comment: <span th:text="${review.comment}"></span></p>
+            <p>Rating: <span th:text="${review.rating}"></span></p>
+        </li>
+    </ul>
+<!--    <hr />-->
+<!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})/add}">Add new comment</a>-->
+<!--    <hr />-->
+<!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})}">Go back to exact movie</a>-->
+    <hr />
+    <a href="/movies">Go to movie list</a>
+</div>
+</body>
+</html>

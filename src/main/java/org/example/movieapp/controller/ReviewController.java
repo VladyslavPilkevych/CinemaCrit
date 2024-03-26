@@ -20,14 +20,17 @@ public class ReviewController {
 
     @GetMapping("/reviews/{movieId}")
     public String showReviews(@PathVariable("movieId") Long movieId, Model model) {
+        System.out.printf("show review ==> ");
         List<Review> reviews = reviewService.getReviewsByMovieId(movieId);
         model.addAttribute("reviews", reviews);
-        return "reviews_list";
+        System.out.println(reviewService.getReviewsByMovieId(movieId));
+        return "movie_review";
     }
 
-    @PostMapping("/reviews/add")
-    public String addReview(@ModelAttribute("review") Review review) {
-        reviewService.addReview(review);
+    @PostMapping("/reviews/{movieId}/add")
+    public String addReview(@PathVariable("movieId") Long movieId, @ModelAttribute("review") Review review) {
+        System.out.printf("add review");
+        reviewService.addReview(movieId, review);
         return "redirect:/reviews/" + review.getMovieId();
     }
 }
