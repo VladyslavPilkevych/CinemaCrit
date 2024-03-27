@@ -23,9 +23,9 @@
     <hr />
         <form th:action="@{/movies/{id}(id=${movie.id})}" method="post">
             <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username"><br>
+            <input type="text" id="username" name="username" value="user"><br>
             <label for="rating">Rating:</label><br>
-            <input type="numer" id="rating" name="rating"><br>
+            <input type="number" id="rating" name="rating"><br>
             <label for="comment">Comment:</label><br>
             <input type="text" id="comment" name="comment"><br>
             <input type="submit" value="Create">

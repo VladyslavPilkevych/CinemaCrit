@@ -2,6 +2,7 @@ package org.example.movieapp.controller;
 
 import org.example.movieapp.model.Movie;
 import org.example.movieapp.model.Review;
+import org.example.movieapp.repository.ReviewRepository;
 import org.example.movieapp.service.MovieService;
 import org.example.movieapp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @GetMapping("/movies")
     public String showMovieList(Model model) {
@@ -31,7 +34,6 @@ public class MovieController {
 
     @GetMapping("/movies/{id}")
     public String showMovieDetails(@PathVariable("id") Long id, Model model) {
-//        System.out.printf("show exact movie by id ==> ");
         Movie movie = movieService.getMovieById(id);
         List<Review> reviews = reviewService.getReviewsByMovieId(id);
         if (movie == null) {
@@ -39,13 +41,17 @@ public class MovieController {
         }
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviews);
-//        System.out.println(movieService.getMovieById(id));
+        model.addAttribute("review", new Review());
         return "movie_details";
     }
 
     @PostMapping("/movies/{id}")
     public String addReview(@PathVariable("id") Long movieId, Review review) {
-        reviewService.addReview(movieId, review);
+//        reviewService.addReview(movieId, review);
+        review.setId(null);
+        review.setMovieId(movieId);
+
+        reviewRepository.save(review);
         return "redirect:/movies/"+movieId;
     }
 }
