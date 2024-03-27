@@ -16,21 +16,21 @@ public class MovieController {
 
     @GetMapping("/movies")
     public String showMovieList(Model model) {
-        System.out.printf("show movies list ==> ");
+//        System.out.printf("show movies list ==> ");
         model.addAttribute("movies", movieService.getAllMovies());
-        System.out.println(movieService.getAllMovies());
+//        System.out.println(movieService.getAllMovies());
         return "movie_list";
     }
 
     @GetMapping("/movies/{id}")
     public String showMovieDetails(@PathVariable("id") Long id, Model model) {
-        System.out.printf("show exact movie by id ==> ");
+//        System.out.printf("show exact movie by id ==> ");
         Movie movie = movieService.getMovieById(id);
         if (movie == null) {
             return "redirect:/movies";
         }
         model.addAttribute("movie", movie);
-        System.out.println(movieService.getMovieById(id));
+//        System.out.println(movieService.getMovieById(id));
         return "movie_details";
     }
 }

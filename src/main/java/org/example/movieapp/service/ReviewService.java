@@ -13,7 +13,7 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     public List<Review> getReviewsByMovieId(Long movieId) {
-        return reviewRepository.findByMovieId(movieId);
+        return reviewRepository.findAllByMovieId(movieId);
     }
 
     public void addReview(Long movieId, Review review) {
