@@ -16,10 +16,12 @@ public class ReviewService {
         return reviewRepository.findAllByMovieId(movieId);
     }
 
-    public void addReview(Long movieId, Review review) {
-        System.out.printf("movieId ==> ");
-        System.out.println(movieId);
-        System.out.printf("review ==> ");
-        System.out.println(review);
+    public Review addReview(Long movieId, Review review) {
+//        System.out.printf("movieId ==> ");
+//        System.out.println(movieId);
+//        System.out.printf("review ==> ");
+//        System.out.println(review);
+        review.setMovieId(movieId);
+        return reviewRepository.save(review);
     }
 }

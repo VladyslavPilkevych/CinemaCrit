@@ -9,8 +9,8 @@
 <h1>Movie Reviews</h1>
 <div>
     <h2>Comments:</h2>
-    <ul>
-        <li th:each="review : ${reviews}">
+    <ul th:each="review : ${reviews}">
+        <li>
             <p th:text="${review.username}"></p>
             <p>Comment: <span th:text="${review.comment}"></span></p>
             <p>Rating: <span th:text="${review.rating}"></span></p>
@@ -20,6 +20,10 @@
 <!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})/add}">Add new comment</a>-->
 <!--    <hr />-->
 <!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})}">Go back to exact movie</a>-->
+    <hr />
+<!--    <form th:action="@{/reviews/}" method="post">-->
+
+<!--    </form>-->
     <hr />
     <a href="/movies">Go to movie list</a>
 </div>
