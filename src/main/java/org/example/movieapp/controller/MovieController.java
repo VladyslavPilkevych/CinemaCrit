@@ -35,7 +35,7 @@ public class MovieController {
     @GetMapping("/movies/{id}")
     public String showMovieDetails(@PathVariable("id") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
-        List<Review> reviews = reviewService.getReviewsByMovieId(id);
+        List<Review> reviews = reviewService.getReviewsByMovieId(id).reversed();
         if (movie == null) {
             return "redirect:/movies";
         }

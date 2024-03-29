@@ -44,17 +44,37 @@
 <!--        <p>Year: <span th:text="${movie.year}"></span></p>-->
 <!--    </li>-->
 <!--</ul>-->
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <!--            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">-->
+        <!--                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>-->
+        <!--            </a>-->
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>-->
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
+            <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
+        </div>
+    </header>
+</div>
 <main>
 
-    <section class="py-5 text-center container">
+    <section class="py-5 text-center container" style="padding-top: 70px">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Album example</h1>
-                <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-                <p>
-                    <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                </p>
+                <h1 class="fw-light">Movies Album</h1>
+                <p class="lead text-muted">OOP project by Vladyslav Pilkevych</p>
+<!--                <p>-->
+<!--                    <a href="#" class="btn btn-primary my-2">Main call to action</a>-->
+<!--                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
+<!--                </p>-->
             </div>
         </div>
     </section>
