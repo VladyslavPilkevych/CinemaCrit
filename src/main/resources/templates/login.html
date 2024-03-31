@@ -32,28 +32,87 @@
     <link href="/css/signin.css" rel="stylesheet">
 </head>
 <body style="display: flex; justify-content: center">
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <!--            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">-->
+        <!--                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>-->
+        <!--            </a>-->
 
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>-->
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
+            <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
+        </div>
+    </header>
+</div>
 <main class="m-v-40">
-    <form>
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <ul class="nav nav-tabs tabs" role="tablist">
+        <li class="nav-item w-50">
+            <p data-tab-name="login" class="nav-link active">Login</p>
+        </li>
+        <li class="nav-item w-50">
+            <p data-tab-name="sign" class="nav-link" role="tab">Sign In</p>
+        </li>
+    </ul>
+    <ul class="tab-content pt-5 tabs-content" id="tab-content">
+        <li data-tab-text="login" class="tab-pane tab-1 active">
+            <div class="container">
+                <form id="loginForm">
+                    <h1 class="h3 mb-3 fw-normal">Login</h1>
 
-        <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
+                    <div class="form-floating mt-2 mb-2">
+                        <input type="text" class="form-control" id="floatingInputLogin" placeholder="username">
+                        <label for="floatingInputLogin">Username</label>
+                    </div>
+                    <div class="form-floating mt-2 mb-2">
+                        <input type="password" class="form-control" id="floatingPasswordLogin" placeholder="password">
+                        <label for="floatingPasswordLogin">Password</label>
+                    </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-    </form>
+                    <!--        <div class="checkbox mb-3">-->
+                    <!--            <label>-->
+                    <!--                <input type="checkbox" value="remember-me"> Remember me-->
+                    <!--            </label>-->
+                    <!--        </div>-->
+                    <button class="w-100 btn btn-lg btn-primary" id="submitLogin" disabled type="button">Login</button>
+                    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+                </form>
+            </div>
+        </li>
+        <li data-tab-text="sign" class="tab-pane tab-2">
+            <form id="signInForm">
+                <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="text" class="form-control" id="floatingInputNameSignIn" placeholder="username">
+                    <label for="floatingInputNameSignIn">Username</label>
+                </div>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="email" class="form-control" id="floatingInputEmailSignIn" placeholder="name@example.com">
+                    <label for="floatingInputEmailSignIn">Email address</label>
+                </div>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="password" class="form-control" id="floatingPasswordSignIn" placeholder="Password">
+                    <label for="floatingPasswordSignIn">Password</label>
+                </div>
+
+                <!--        <div class="checkbox mb-3">-->
+                <!--            <label>-->
+                <!--                <input type="checkbox" value="remember-me"> Remember me-->
+                <!--            </label>-->
+                <!--        </div>-->
+                <button class="w-100 btn btn-lg btn-primary" disabled id="submitSignIn" type="button">Create account</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+            </form>
+        </li>
+    </ul>
+
 </main>
 <!--<h1>Login</h1>-->
 <!--<form action="/login" method="post">-->
@@ -63,5 +122,126 @@
 <!--    <input type="password" id="password" name="password"><br><br>-->
 <!--    <input type="submit" value="Login">-->
 <!--</form>-->
+<script>
+    // tabs:
+    const tabs = document.querySelector('.tabs');
+    const text = document.querySelectorAll('.tabs-content li');
+    tabs.addEventListener('click', function (event) {
+        event.target.closest('ul').querySelector('.active').classList.remove('active');
+        event.target.classList.add('active');
+        const target = event.target.dataset.tabName;
+        text.forEach(item => {
+            item.classList.remove('active');
+            if (target === item.dataset.tabText) {
+                item.classList.add('active');
+            }
+        })
+    })
+
+    // validation login
+    function submitLoginForm(formData) {
+        formData.operation = "login";
+        return new Promise((resolve, reject) => {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        });
+    }
+    const usernameLogin = document.getElementById("floatingInputLogin");
+    const passwordLogin = document.getElementById("floatingPasswordLogin");
+    const submitLoginBtn = document.getElementById("submitLogin");
+    const loginForm = document.getElementById('loginForm');
+    const loginFormInputs = loginForm.querySelectorAll('input');
+    function toggleSubmitLogin() {
+        if (usernameLogin?.value?.length > 0 && passwordLogin?.value?.length > 0) {
+            submitLoginBtn.removeAttribute('disabled');
+        } else {
+            submitLoginBtn.setAttribute('disabled', true);
+        }
+    }
+    loginFormInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            toggleSubmitLogin();
+        });
+    });
+    submitLoginBtn.addEventListener('click', function() {
+        const formData = new FormData(loginForm);
+        if(!submitLoginBtn.disable) {
+            submitLoginForm(formData)
+                .then(responseData => {
+                    console.log('Form submitted successfully');
+                })
+                .catch(error => {
+                    console.log('Error submitting form:', error);
+                });
+        }
+    });
+
+
+    // validation signIn
+    function submitSignInForm(formData) {
+        formData.operation = "signIn";
+        return new Promise((resolve, reject) => {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+                // body: ({
+                //     ...formData,
+                //     operation: "login",
+                // })
+            })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        });
+    }
+    const usernameSignIn = document.getElementById("floatingInputNameSignIn");
+    const emailSignIn = document.getElementById("floatingInputEmailSignIn");
+    const passwordSignIn = document.getElementById("floatingPasswordSignIn");
+    const submitSignInBtn = document.getElementById("submitSignIn");
+    const signInForm = document.getElementById('signInForm');
+    const signInFormInputs = signInForm.querySelectorAll('input');
+    function toggleSubmitSignIn() {
+        if (usernameSignIn?.value?.length > 0 && emailSignIn?.value?.length > 0 && passwordSignIn?.value?.length) {
+            submitSignInBtn.removeAttribute('disabled');
+        } else {
+            submitSignInBtn.setAttribute('disabled', true);
+        }
+    }
+    signInFormInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            toggleSubmitSignIn();
+        });
+    });
+    submitSignInBtn.addEventListener('click', function() {
+        const formData = new FormData(signInForm);
+        if(!submitSignInBtn.disable) {
+            submitSignInForm(formData)
+                .then(responseData => {
+                    console.log('Form submitted successfully');
+                })
+                .catch(error => {
+                    console.log('Error submitting form:', error);
+                });
+        }
+    });
+
+</script>
 </body>
 </html>
