@@ -6,9 +6,9 @@ import org.example.movieapp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +44,8 @@ public class AuthenticationController {
         String password = (String) requestData.get("password");
         if ("login".equals(operation)) {
             if (authenticationService.authenticate(username, password)) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+//                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
                 return ResponseEntity.ok("Successful login");
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -60,8 +60,8 @@ public class AuthenticationController {
                 user.setUsername(username);
                 user.setEmail(email);
                 authenticationRepository.save(user);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+//                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
                 return ResponseEntity.ok("Successful login");
             }
         } else {

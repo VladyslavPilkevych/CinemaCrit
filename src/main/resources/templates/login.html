@@ -157,6 +157,10 @@
             })
                 .then(response => {
                     console.log(response);
+                    if (formData?.username)
+                        localStorage.setItem("user", formData?.username);
+                    window.location.pathname = "/movies";
+                    // console.log(window.location);
                 })
                 .catch(error => {
                     console.log(error);
@@ -209,6 +213,8 @@
             })
                 .then(response => {
                     console.log(response);
+                    if (formData?.username)
+                        localStorage.setItem('user', formData?.username);
                 })
                 .catch(error => {
                     console.log(error);

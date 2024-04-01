@@ -60,14 +60,23 @@
 
 
         <div class="col-md-3 text-end">
-            <th:block th:if="${auth != null}">
-                <a type="button" href="/logout" class="btn btn-outline-danger me-2">Logout</a>
-                <span th:text="${auth}"></span>
-            </th:block>
-            <th:block th:unless="${auth != null}">
+<!--            <th:block th:if="${auth != null}">-->
+<!--                <a type="button" href="/logout" class="btn btn-outline-danger me-2">Logout</a>-->
+<!--                <span th:text="${auth}"></span>-->
+<!--            </th:block>-->
+<!--            <th:block th:unless="${auth != null}">-->
+<!--                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
+<!--                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
+<!--            </th:block>-->
+            <div id="authUserDiv">
+                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
+                <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
+                <a type="button" href="/login" id="logout" class="btn btn-outline-primary me-2">Log out</a>
+            </div>
+            <div id="noUserDiv">
                 <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
                 <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
-            </th:block>
+            </div>
 <!--            <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
 <!--            <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
         </div>
@@ -127,7 +136,31 @@
 </footer>
 
 
+<script>
+    const noUserDiv = document.getElementById("noUserDiv");
+    const authUserDiv = document.getElementById("authUserDiv");
+    const authUserName = document.getElementById("authUserName");
+    const userLogged = localStorage.getItem('user');
+    console.log(userLogged);
+    if (userLogged && userLogged?.length > 0) {
+        noUserDiv.setAttribute("hidden", "true");
+        authUserDiv.removeAttribute("hidden");
+        authUserName.innerText = userLogged;
+    } else {
+        console.log(userLogged);
+        noUserDiv.removeAttribute("hidden");
+        authUserDiv.setAttribute("hidden", "true");
+    }
 
+    const logoutBtn = document.getElementById("logout");
+    logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('user');
+        location.reload();
+    });
+
+
+</script>
 <script src="/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
