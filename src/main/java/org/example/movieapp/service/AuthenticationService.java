@@ -17,7 +17,10 @@ public class AuthenticationService {
         return userRepository.findAll();
     }
     public boolean authenticate(String username, String password) {
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
+        Optional<User> userOptional = userRepository.findByUsername(username);
+//        System.out.printf(username);
+//        System.out.printf(password);
+//        System.out.printf(userOptional.toString());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return user.getPassword().equals(password);

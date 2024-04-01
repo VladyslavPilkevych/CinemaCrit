@@ -139,6 +139,12 @@
     })
 
     // validation login
+
+    const usernameLogin = document.getElementById("floatingInputLogin");
+    const passwordLogin = document.getElementById("floatingPasswordLogin");
+    const submitLoginBtn = document.getElementById("submitLogin");
+    const loginForm = document.getElementById('loginForm');
+    const loginFormInputs = loginForm.querySelectorAll('input');
     function submitLoginForm(formData) {
         formData.operation = "login";
         return new Promise((resolve, reject) => {
@@ -157,11 +163,6 @@
                 })
         });
     }
-    const usernameLogin = document.getElementById("floatingInputLogin");
-    const passwordLogin = document.getElementById("floatingPasswordLogin");
-    const submitLoginBtn = document.getElementById("submitLogin");
-    const loginForm = document.getElementById('loginForm');
-    const loginFormInputs = loginForm.querySelectorAll('input');
     function toggleSubmitLogin() {
         if (usernameLogin?.value?.length > 0 && passwordLogin?.value?.length > 0) {
             submitLoginBtn.removeAttribute('disabled');
@@ -176,6 +177,8 @@
     });
     submitLoginBtn.addEventListener('click', function() {
         const formData = new FormData(loginForm);
+        formData.username = usernameLogin?.value;
+        formData.password = passwordLogin?.value;
         if(!submitLoginBtn.disable) {
             submitLoginForm(formData)
                 .then(responseData => {
@@ -190,6 +193,7 @@
 
     // validation signIn
     function submitSignInForm(formData) {
+        console.log(formData);
         formData.operation = "signIn";
         return new Promise((resolve, reject) => {
             fetch('/login', {
@@ -231,6 +235,9 @@
     });
     submitSignInBtn.addEventListener('click', function() {
         const formData = new FormData(signInForm);
+        formData.username = usernameSignIn?.value;
+        formData.password = passwordSignIn?.value;
+        formData.email = emailSignIn?.value;
         if(!submitSignInBtn.disable) {
             submitSignInForm(formData)
                 .then(responseData => {
