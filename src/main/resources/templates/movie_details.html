@@ -183,26 +183,24 @@
 <!--    <hr />-->
 <!--    <a href="/movies">Go back to movie list</a>-->
 <!--</div>-->
-    <div class="container fixed-top">
-        <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-<!--            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">-->
-<!--                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>-->
-<!--            </a>-->
-
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
-<!--                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>-->
-<!--                <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>-->
-<!--                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>-->
-<!--                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>-->
-            </ul>
-
-            <div class="col-md-3 text-end">
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+        </ul>
+        <div class="col-md-3 text-end">
+            <div id="authUserDiv">
+                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
+                <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
+                <a type="button" href="/login" id="logout" class="btn btn-outline-primary me-2">Log out</a>
+            </div>
+            <div id="noUserDiv">
                 <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
                 <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
+</div>
 <main class="container" style="padding-top: 70px">
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
@@ -226,46 +224,50 @@
 
 
                 <ul class="nav nav-tabs tabs" role="tablist">
-                    <li class="nav-item">
+                    <li class="nav-item" style="cursor: pointer">
                         <p data-tab-name="comments" class="nav-link active">Comments</p>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="cursor: pointer">
                         <p data-tab-name="new" class="nav-link" role="tab">Add comment</p>
                     </li>
                 </ul>
                 <ul class="tab-content pt-5 tabs-content" id="tab-content">
                     <li data-tab-text="comments" class="tab-pane tab-1 active">
                         <div class="container">
+                            <div class="row mt-2 mb-2" th:if="${reviews?.empty}">
+                                <p>No comments yet</p>
+                            </div>
                             <div class="row mt-2 mb-2" th:each="review : ${reviews}">
-                                    <div class="card card-white post">
-                                        <div class="post-heading" style="display: flex">
-                                            <div class="float-left image">
-                                                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
-                                            </div>
-                                            <div class="float-left meta">
-                                                <div class="title h5" style="display: flex">
-                                                    <p><b th:text="${review.username}"></b>&nbsp;made a post.</p>
-
-                                                </div>
-                                                <h6 class="text-muted time">1 minute ago</h6>
-                                            </div>
+                                <div class="card card-white post">
+                                    <div class="post-heading" style="display: flex">
+                                        <div class="float-left image">
+                                            <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
                                         </div>
-                                        <div class="post-description">
-                                            <p th:text="${review.comment}"></p>
+                                        <div class="float-left meta">
+                                            <div class="title h5" style="display: flex">
+                                                <p><b th:text="${review.username}"></b>&nbsp;made a post.</p>
+                                            </div>
+                                            <h6 class="text-muted time">1 minute ago</h6>
                                         </div>
                                     </div>
+                                    <div class="post-description">
+                                        <p th:text="${review.comment}"></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </li>
                     <li data-tab-text="new" class="tab-pane tab-2">
-                         <form th:action="@{/movies/{id}(id=${movie.id})}" method="post">
+                        <a href="/login" class="list-group-item list-group-item-action list-group-item-warning p-3 mb-2" id="clientNotAuthInfo" hidden>You must be authorized to post comments</a>
+                         <form th:action="@{/movies/{id}(id=${movie.id})}" id="addCommentsForm" method="post">
                              <label for="username">Username:</label><br>
-                             <input type="text" id="username" name="username" value="user"><br>
+                             <input type="text" id="username" name="username" class="form-control" disabled><br>
                              <label for="rating">Rating:</label><br>
-                             <input type="number" id="rating" name="rating"><br>
+                             <input type="number" id="rating" name="rating" class="form-control"><br>
                              <label for="comment">Comment:</label><br>
-                             <input type="text" id="comment" name="comment"><br>
-                             <input type="submit" value="Create">
+                             <textarea type="text" id="comment" name="comment" class="form-control"></textarea><br>
+                             <input type="submit" value="Create" class="form-control btn btn-primary">
                          </form>
                     </li>
                 </ul>
@@ -278,6 +280,7 @@
     </div>
 
 </main>
+<script src="/js/authentication.js"></script>
 <script>
     // tabs:
     const tabs = document.querySelector('.tabs');
@@ -293,6 +296,19 @@
             }
         })
     })
+    // comments:
+    const addCommentsForm = document.querySelectorAll("#addCommentsForm .form-control");
+    const username = document.getElementById("username");
+
+    if (!(userLogged && userLogged?.length > 0)) {
+        document.getElementById("clientNotAuthInfo").removeAttribute("hidden");
+        addCommentsForm?.forEach((item) => {
+            item?.setAttribute("disabled", true);
+        })
+    } else {
+        username.setAttribute("value", userLogged);
+    }
+
 </script>
 </body>
 </html>
