@@ -23,7 +23,8 @@ public class AdminController {
 
     @GetMapping("/settings")
     public String showMovieList(Model model) {
-        model.addAttribute("movies", authenticationService.getAllUsers());
+        model.addAttribute("users", authenticationService.getAllUsers());
+        model.addAttribute("reviews", reviewService.getAllReviews());
         return "admin_settings";
     }
 

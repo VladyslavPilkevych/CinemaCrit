@@ -12,6 +12,11 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
+
     public List<Review> getReviewsByMovieId(Long movieId) {
         return reviewRepository.findAllByMovieId(movieId);
     }
