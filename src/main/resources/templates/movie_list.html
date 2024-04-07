@@ -46,28 +46,10 @@
 <!--</ul>-->
 <div class="container fixed-top">
     <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <!--            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">-->
-        <!--                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>-->
-        <!--            </a>-->
-
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
-            <!--                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>-->
-            <!--                <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>-->
-            <!--                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>-->
-            <!--                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>-->
         </ul>
-
-
         <div class="col-md-3 text-end">
-<!--            <th:block th:if="${auth != null}">-->
-<!--                <a type="button" href="/logout" class="btn btn-outline-danger me-2">Logout</a>-->
-<!--                <span th:text="${auth}"></span>-->
-<!--            </th:block>-->
-<!--            <th:block th:unless="${auth != null}">-->
-<!--                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
-<!--                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
-<!--            </th:block>-->
             <div id="authUserDiv">
                 <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
                 <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
@@ -77,8 +59,9 @@
                 <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
                 <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
             </div>
-<!--            <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
-<!--            <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
+            <div id="adminHeaderPart" hidden>
+                <a type="button" href="/settings" class="btn btn-primary">Settings</a>
+            </div>
         </div>
     </header>
 </div>
@@ -138,6 +121,7 @@
 
 <script src="/js/authentication.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/admin.js"></script>
 
 </body>
 </html>

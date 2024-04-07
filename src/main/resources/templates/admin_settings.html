@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="headers.css" rel="stylesheet">
+</head>
+<body>
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+        </ul>
+        <div class="col-md-3 text-end">
+            <div id="authUserDiv">
+                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
+                <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
+                <a type="button" href="/login" id="logout" class="btn btn-outline-primary me-2">Log out</a>
+            </div>
+            <div id="noUserDiv">
+                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
+            </div>
+        </div>
+    </header>
+</div>
+<main class="container" style="padding-top: 70px">
+    <h1>Settings</h1>
+</main>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

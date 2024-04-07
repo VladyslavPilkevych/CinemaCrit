@@ -6,15 +6,13 @@ import org.example.movieapp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,23 +35,41 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, Object> requestData) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> requestData) {
         String operation = (String) requestData.get("operation");
         String username = (String) requestData.get("username");
 //        System.out.printf(username);
         String password = (String) requestData.get("password");
+
+        Map<String, Object> responseBody = new HashMap<>();
         if ("login".equals(operation)) {
             if (authenticationService.authenticate(username, password)) {
 //                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
 //                SecurityContextHolder.getContext().setAuthentication(authentication);
-                return ResponseEntity.ok("Successful login");
+//                if ("admin".equals(username)) {
+//                    return ResponseEntity.ok("Administrator logged in");
+//                } else {
+//                    return ResponseEntity.ok("Regular user logged in");
+//                }
+                boolean isAdmin = "admin".equals(username);
+                responseBody.put("admin", isAdmin);
+                responseBody.put("message", "Successful login");
+                return ResponseEntity.ok(responseBody);
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+                responseBody.put("admin", false);
+                responseBody.put("message", "Invalid username or password");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
             }
         } else if ("signIn".equals(operation)) {
             String email = (String) requestData.get("email");
-            if (authenticationService.authenticate(username, password)) {
-                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Invalid username or password");
+            if (authenticationService.isUserExist(username)) {
+                responseBody.put("admin", false);
+                responseBody.put("message", "Username already exist");
+                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(responseBody);
+            } else if (authenticationService.isEmailExist(email)) {
+                responseBody.put("admin", false);
+                responseBody.put("message", "Email already uses");
+                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(responseBody);
             } else {
                 User user = new User();
                 user.setPassword(password);
@@ -62,10 +78,14 @@ public class AuthenticationController {
                 authenticationRepository.save(user);
 //                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
 //                SecurityContextHolder.getContext().setAuthentication(authentication);
-                return ResponseEntity.ok("Successful login");
+                responseBody.put("admin", false);
+                responseBody.put("message", "Successful login");
+                return ResponseEntity.ok(responseBody);
             }
         } else {
-            return ResponseEntity.badRequest().body("Invalid operation");
+            responseBody.put("admin", false);
+            responseBody.put("message", "Invalid operation");
+            return ResponseEntity.badRequest().body(responseBody);
         }
     }
 

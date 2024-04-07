@@ -18,15 +18,21 @@ public class AuthenticationService {
     }
     public boolean authenticate(String username, String password) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-//        System.out.printf(username);
-//        System.out.printf(password);
-//        System.out.printf(userOptional.toString());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return user.getPassword().equals(password);
         }
 
         return false;
+    }
+
+    public boolean isUserExist(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.isPresent();
+    }
+    public boolean isEmailExist(String email) {
+        Optional<User> emailOptional = userRepository.findByEmail(email);
+        return emailOptional.isPresent();
     }
 
     public void logout() {

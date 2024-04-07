@@ -125,12 +125,21 @@
             })
                 .then(response => {
                     console.log(response);
-                    if (response?.status === 200 && formData?.username) {
-                        localStorage.setItem("user", formData?.username);
-                        window.location.pathname = "/movies";
+                    if (response?.status === 200) {
+                        return response.json();
                     } else {
                         document.getElementById("errorAuthMessage")?.removeAttribute("hidden");
                     }
+                })
+                .then(data => {
+                    console.log(data);
+                    if (!data?.admin && formData?.username) {
+                        localStorage.setItem("user", formData?.username);
+                    } else {
+                        localStorage.removeItem('user');
+                        localStorage.setItem("admin", "admin");
+                    }
+                    window.location.pathname = "/movies";
                 })
                 .catch(error => {
                     console.log(error);
@@ -178,8 +187,10 @@
             })
                 .then(response => {
                     console.log(response);
-                    if (response?.status === 200 && formData?.username)
+                    if (response?.status === 200 && formData?.username) {
                         localStorage.setItem('user', formData?.username);
+                        window.location.pathname = "/movies";
+                    }
                 })
                 .catch(error => {
                     console.log(error);
