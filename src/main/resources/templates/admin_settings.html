@@ -40,6 +40,9 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
         </ul>
+        <div class="col-md-3 text-end">
+            <a type="button" href="/movies" id="logoutAdmin" class="btn btn-outline-primary me-2">Log out</a>
+        </div>
     </header>
 </div>
 <main class="container" style="padding-top: 70px">
@@ -56,18 +59,18 @@
                                 Customers
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                Integrations
-                            </a>
-                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="#">-->
+<!--                                <span data-feather="users"></span>-->
+<!--                                Dashboard-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="#">-->
+<!--                                <span data-feather="layers"></span>-->
+<!--                                Integrations-->
+<!--                            </a>-->
+<!--                        </li>-->
                     </ul>
 
 <!--                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">-->
@@ -129,14 +132,16 @@
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">User</th>
-<!--                            <th scope="col">Comments</th>-->
+<!--                            <th scope="col">Comments</th> // TODO -->
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="user : ${users}">
-                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.id}" class="userId"></td>
                             <td th:text="${user.username}"></td>
-<!--                            <td th:text="${#lists.size(reviews.?[username == user.username])}"></td>-->
+<!--                            <td th:text="${review.stream().filter(elem->elem.username.equals(user.username)).count()}"></td> // TODO -->
+                            <td><button type="button" class="btn btn-danger p-1">Remove</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -146,9 +151,38 @@
     </div>
 
 </main>
-<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
-
+<script src="/js/authentication.js"></script>
+<script>
+    const deleteUsersButtons = [...document.getElementsByClassName("btn-danger")];
+    deleteUsersButtons.forEach((btn) => {
+        btn.addEventListener("click", function (event) {
+            let parentTr = event.target.closest("tr");
+            let userId = parentTr.querySelector(".userId").textContent;
+            new Promise((resolve, reject) => {
+                fetch('/delete/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Number(userId))
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.log('Error removing user:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Error removing user:', error);
+                    });
+            });
+        });
+    });
+</script>
+<script src="/js/admin.js"></script>
 </body>
 </html>

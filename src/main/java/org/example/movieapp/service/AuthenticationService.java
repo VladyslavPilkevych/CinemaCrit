@@ -35,7 +35,11 @@ public class AuthenticationService {
         return emailOptional.isPresent();
     }
 
-    public void logout() {
+    public void logout() {}
 
+    public void removeUserById(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        userOptional.ifPresent(userRepository::delete);
     }
+
 }
