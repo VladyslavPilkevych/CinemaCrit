@@ -129,6 +129,7 @@
                         return response.json();
                     } else {
                         document.getElementById("errorAuthMessage")?.removeAttribute("hidden");
+                        throw new Error("Error during login!");
                     }
                 })
                 .then(data => {
