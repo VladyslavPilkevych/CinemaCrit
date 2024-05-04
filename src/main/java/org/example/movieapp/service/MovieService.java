@@ -43,5 +43,10 @@ public class MovieService {
     public void deleteMovie(Long id) {
         movieRepository.deleteById(id);
     }
+
+//    public void saveMovieWithImage(Movie movie, byte[] imageData) {
+//        movie.setImageData(imageData);
+//        movieRepository.save(movie);
+//    }
 }
 

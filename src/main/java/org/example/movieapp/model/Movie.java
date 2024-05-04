@@ -15,6 +15,17 @@ public class Movie {
     private String description;
     private int year;
 
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] imageData;
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
     @OneToMany(mappedBy = "movieId", cascade = CascadeType.ALL)
     private List<Review> reviews;
 

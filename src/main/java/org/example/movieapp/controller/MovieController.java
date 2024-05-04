@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,6 +65,27 @@ public class MovieController {
         return "movie_details";
     }
 
+    @PostMapping("/movies/{id}/image")
+    public String uploadMovieImage(@PathVariable("id") Long movieId,
+                                   @RequestParam("image") MultipartFile image) {
+        try {
+            Movie movie = movieService.getMovieById(movieId);
+            if (movie == null) {
+                return "redirect:/movies";
+            }
+
+            if (!image.isEmpty()) {
+                movie.setImageData(image.getBytes());
+                movieService.updateMovie(movie);
+            }
+
+            return "redirect:/movies/" + movieId;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
     @PostMapping("/movies/{id}")
     public String addReview(@PathVariable(name = "id") String movieId, @RequestBody String body, Review review) {
         Long movieIdLong = Long.parseLong(movieId);
@@ -75,4 +98,5 @@ public class MovieController {
         reviewRepository.save(review);
         return "redirect:/movies/?id="+movieId;
     }
+
 }
