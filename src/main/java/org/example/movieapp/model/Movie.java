@@ -2,6 +2,8 @@ package org.example.movieapp.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Movie {
 
@@ -12,6 +14,9 @@ public class Movie {
     private String title;
     private String description;
     private int year;
+
+    @OneToMany(mappedBy = "movieId", cascade = CascadeType.ALL)
+    private List<Review> reviews;
 
     public Long getId() {
         return id;
@@ -43,5 +48,18 @@ public class Movie {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public double getAverageRating() {
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+
+        double totalRating = 0.0;
+        for (Review review : reviews) {
+            totalRating += review.getRating();
+        }
+
+        return totalRating / reviews.size();
     }
 }
