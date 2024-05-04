@@ -16,9 +16,9 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="blog.css" rel="stylesheet">
+    <link href="/css/blog.css" rel="stylesheet">
 
-    <link href="headers.css" rel="stylesheet">
+    <link href="/css/headers.css" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -234,7 +234,7 @@
                 <ul class="tab-content pt-5 tabs-content" id="tab-content">
                     <li data-tab-text="comments" class="tab-pane tab-1 active">
                         <div class="container">
-                            <div class="row mt-2 mb-2" th:if="${reviews?.empty}">
+                            <div class="row mt-2 mb-2" th:if="${reviews.empty}">
                                 <p>No comments yet</p>
                             </div>
                             <div class="row mt-2 mb-2" th:each="review : ${reviews}">
@@ -245,9 +245,13 @@
                                         </div>
                                         <div class="float-left meta">
                                             <div class="title h5" style="display: flex">
-                                                <p><b th:text="${review.username}"></b>&nbsp;made a post.</p>
+                                                <p><b th:text="${review.getUsername()}"></b>&nbsp;made a post.</p>
                                             </div>
-                                            <h6 class="text-muted time">1 minute ago</h6>
+<!--                                            <h6 class="text-muted time">1 minute ago</h6>-->
+<!--                                            <h6 class="text-muted time"  th:text="${T(java.time.LocalDateTime).now()}"></h6>-->
+<!--                                            <h6 class="text-muted time" th:text="${#dates.format(review.getCreatedDate(), 'yyyy-MM-dd HH:mm')}"></h6>-->
+<!--                                            <h6 class="text-muted time" th:text="${getAgoString(review.getCreatedDate())}"></h6>-->
+                                            <h6 class="text-muted time" th:text="${dateUtils.getAgoString(review.getCreatedDate())}"></h6>
                                         </div>
                                     </div>
                                     <div class="post-description">
@@ -260,15 +264,21 @@
                     </li>
                     <li data-tab-text="new" class="tab-pane tab-2">
                         <a href="/login" class="list-group-item list-group-item-action list-group-item-warning p-3 mb-2" id="clientNotAuthInfo" hidden>You must be authorized to post comments</a>
-                         <form th:action="@{/movies/{id}(id=${movie.id})}" id="addCommentsForm" method="post">
-                             <label for="username">Username:</label><br>
-                             <input type="text" id="username" name="username" class="form-control" disabled><br>
-                             <label for="rating">Rating:</label><br>
-                             <input type="number" id="rating" name="rating" class="form-control"><br>
-                             <label for="comment">Comment:</label><br>
-                             <textarea type="text" id="comment" name="comment" class="form-control"></textarea><br>
-                             <input type="submit" value="Create" class="form-control btn btn-primary">
-                         </form>
+                        <form th:action="@{/movies/{id}(id=${movie.id})}" id="addCommentsForm" method="post" novalidate>
+                            <label for="username" hidden>Username:</label>
+                            <!--<br>-->
+                            <input type="text" id="username" name="username" class="form-control" hidden>
+                            <!--<br>-->
+
+                            <label for="rating">Rating:</label><br>
+                            <input type="number" id="rating" name="rating" class="form-control" min="1" max="10" required><br>
+                            <div class="invalid-feedback">Please enter a number between 1 and 10.</div>
+
+                            <label for="comment">Comment:</label><br>
+                            <textarea type="text" id="comment" name="comment" class="form-control"></textarea><br>
+
+                            <input type="submit" value="Create" class="form-control btn btn-primary" id="submitBtn">
+                        </form>
                     </li>
                 </ul>
 
@@ -308,6 +318,18 @@
     } else {
         username.setAttribute("value", userLogged);
     }
+
+    // comment validation:
+    document.getElementById("submitBtn").disabled = true;
+
+    document.getElementById("rating").addEventListener("input", function() {
+        const ratingInput = this.value;
+        const isValid = !isNaN(ratingInput) && ratingInput >= 1 && ratingInput <= 10;
+
+        this.classList[isValid ? "remove" : "add"]("is-invalid");
+
+        document.getElementById("submitBtn").disabled = !isValid;
+    });
 
 </script>
 <script src="/js/admin.js"></script>

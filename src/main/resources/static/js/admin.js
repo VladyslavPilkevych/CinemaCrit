@@ -10,7 +10,9 @@ if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
 }
 
 const logoutAdminBtn = document.getElementById("logoutAdmin");
-logoutAdminBtn.addEventListener('click', function() {
-    localStorage.removeItem('admin');
-    location.reload();
-});
+if (logoutAdminBtn) {
+    logoutAdminBtn?.addEventListener('click', function () {
+        localStorage.removeItem('admin');
+        location.reload();
+    });
+}

@@ -5,13 +5,13 @@ import org.example.movieapp.model.Review;
 import org.example.movieapp.repository.ReviewRepository;
 import org.example.movieapp.service.MovieService;
 import org.example.movieapp.service.ReviewService;
+import org.example.movieapp.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -25,9 +25,20 @@ public class MovieController {
     private ReviewRepository reviewRepository;
 
     @GetMapping("/movies")
-    public String showMovieList(Model model) {
+    public String showMovieList(@RequestParam(name = "filter", required = false) String filter, Model model) {
 //        System.out.printf("show movies list ==> ");
-        model.addAttribute("movies", movieService.getAllMovies());
+//        model.addAttribute("movies", movieService.getAllMovies());
+        List<Movie> movies;
+        if ("date".equals(filter)) {
+            movies = movieService.getMoviesFilteredByDate();
+        } else if ("rate".equals(filter)) {
+            movies = movieService.getMoviesFilteredByRate();
+        } else if ("popularity".equals(filter)) {
+            movies = movieService.getMoviesFilteredByPopularity();
+        } else {
+            movies = movieService.getAllMovies();
+        }
+        model.addAttribute("movies", movies);
 //        System.out.println(movieService.getAllMovies());
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        if (authentication != null && authentication.isAuthenticated()) {
@@ -37,26 +48,31 @@ public class MovieController {
         return "movie_list";
     }
 
-    @GetMapping("/movies/{id}")
-    public String showMovieDetails(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/movies/")
+    public String showMovieDetails(@RequestParam(name="id", defaultValue = "") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
         List<Review> reviews = reviewService.getReviewsByMovieId(id).reversed();
         if (movie == null) {
             return "redirect:/movies";
         }
+//        System.out.println(reviews.get(0).getCreatedDate());
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviews);
         model.addAttribute("review", new Review());
+        model.addAttribute("dateUtils", new DateUtils());
         return "movie_details";
     }
 
     @PostMapping("/movies/{id}")
-    public String addReview(@PathVariable("id") Long movieId, Review review) {
+    public String addReview(@PathVariable(name = "id") String movieId, @RequestBody String body, Review review) {
+        Long movieIdLong = Long.parseLong(movieId);
+//        System.out.println(body);
 //        reviewService.addReview(movieId, review);
         review.setId(null);
-        review.setMovieId(movieId);
+        review.setCreatedDate(LocalDateTime.now());
+        review.setMovieId(movieIdLong);
 
         reviewRepository.save(review);
-        return "redirect:/movies/"+movieId;
+        return "redirect:/movies/?id="+movieId;
     }
 }

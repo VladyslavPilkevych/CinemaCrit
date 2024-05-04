@@ -83,6 +83,16 @@
     <div class="album py-5 bg-light">
         <div class="container">
 
+            <h1>Movie Filter</h1>
+            <div class="mb-3">
+                <label for="filterSelect" class="form-label">Filter By:</label>
+                <select class="form-select" id="filterSelect">
+                    <option value="none">No Filters</option>
+                    <option value="date">Date</option>
+                    <option value="rate">Rate</option>
+                    <option value="popularity">Popularity</option>
+                </select>
+            </div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div th:each="movie : ${movies}" class="col">
                     <div class="card shadow-sm">
@@ -94,7 +104,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
 <!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
-                                    <a th:href="@{/movies/{id}(id=${movie.id})}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
+                                    <a th:href="@{/movies/?id={id}(id=${movie.id})}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
                                     <p th:text="${movie.id}" class="movieId" hidden></p>
                                     <button type="button" class="btn btn-sm btn-danger" hidden>Delete</button>
 <!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
@@ -166,6 +176,13 @@
             });
         });
     }
+
+    // select
+    const filterSelect = document.getElementById('filterSelect');
+    filterSelect.addEventListener('change', function() {
+        const selectedFilter = filterSelect.value;
+        window.location.href = `/movies?filter=${selectedFilter}`;
+    });
 </script>
 
 </body>
