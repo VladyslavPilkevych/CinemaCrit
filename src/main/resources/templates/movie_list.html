@@ -178,10 +178,32 @@
     }
 
     // select
+    // const filterSelect = document.getElementById('filterSelect');
+    // filterSelect.addEventListener('change', function() {
+    //     const selectedFilter = filterSelect.value;
+    //     window.location.href = `/movies?filter=${selectedFilter}`;
+    // });
     const filterSelect = document.getElementById('filterSelect');
     filterSelect.addEventListener('change', function() {
         const selectedFilter = filterSelect.value;
-        window.location.href = `/movies?filter=${selectedFilter}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/movies?filter=' + selectedFilter, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(response, 'text/html');
+                const movieListContainer = document.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                const newMovieList = doc.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                movieListContainer.innerHTML = newMovieList.innerHTML;
+                // Change URL
+                const newUrl = '/movies?filter=' + selectedFilter;
+                history.pushState({ path: newUrl }, '', newUrl);
+            } else {
+                console.error('Request failed. Status: ' + xhr.status);
+            }
+        };
+        xhr.send();
     });
 </script>
 
