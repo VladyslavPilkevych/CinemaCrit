@@ -3,16 +3,15 @@ package org.example.movieapp.model;
 import jakarta.persistence.*;
 
 @Entity
-public class User extends Person {
-
+public class Admin extends Person {
+//
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
-
+//
 //    private String username;
 //    private String password;
-    private String email;
-
+//
 //    public Long getId() {
 //        return id;
 //    }
@@ -37,11 +36,4 @@ public class User extends Person {
 //        this.password = password;
 //    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

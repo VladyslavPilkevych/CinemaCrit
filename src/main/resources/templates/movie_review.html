@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Reviews</title>
+</head>
+<body>
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <!--            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">-->
+        <!--                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>-->
+        <!--            </a>-->
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>-->
+            <!--                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>-->
+        </ul>
+
+
+        <div class="col-md-3 text-end">
+            <!--            <th:block th:if="${auth != null}">-->
+            <!--                <a type="button" href="/logout" class="btn btn-outline-danger me-2">Logout</a>-->
+            <!--                <span th:text="${auth}"></span>-->
+            <!--            </th:block>-->
+            <!--            <th:block th:unless="${auth != null}">-->
+            <!--                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
+            <!--                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
+            <!--            </th:block>-->
+            <div id="authUserDiv">
+                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
+                <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
+                <a type="button" href="/login" id="logout" class="btn btn-outline-primary me-2">Log out</a>
+            </div>
+            <div id="noUserDiv">
+                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
+            </div>
+            <!--            <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>-->
+            <!--            <a type="button" href="/login" class="btn btn-primary">Sign-up</a>-->
+        </div>
+    </header>
+</div>
+<h1>Movie Reviews</h1>
+<div>
+    <h2>Comments:</h2>
+    <ul th:each="review : ${reviews}">
+        <li>
+            <p th:text="${review.username}"></p>
+            <p>Comment: <span th:text="${review.comment}"></span></p>
+            <p>Rating: <span th:text="${review.rating}"></span></p>
+        </li>
+    </ul>
+<!--    <hr />-->
+<!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})/add}">Add new comment</a>-->
+<!--    <hr />-->
+<!--    <a th:href="@{/movies/{id}(id=${reviews[0].movieId})}">Go back to exact movie</a>-->
+    <hr />
+<!--    <form th:action="@{/reviews/}" method="post">-->
+
+<!--    </form>-->
+    <hr />
+    <a href="/movies">Go to movie list</a>
+    <script src="/js/authentication.js"></script>
+    <script src="/js/admin.js"></script>
+</div>
+</body>
+</html>

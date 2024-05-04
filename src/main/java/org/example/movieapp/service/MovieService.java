@@ -16,6 +16,18 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+    public List<Movie> getMoviesFilteredByDate() {
+        return movieRepository.findAllByOrderByYearDesc();
+    }
+
+    public List<Movie> getMoviesFilteredByRate() {
+        return movieRepository.findAllByOrderByAverageRatingDesc();
+    }
+
+    public List<Movie> getMoviesFilteredByPopularity() {
+        return movieRepository.findMoviesByPopularity();
+    }
+
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id).orElse(null);
     }

@@ -4,15 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <link href="/css/signin.css" rel="stylesheet">
 </head>
-<body>
-<h1>Login</h1>
-<form action="/login" method="post">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Login">
-</form>
+<body style="display: flex; justify-content: center">
+<div class="container fixed-top">
+    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+        </div>
+    </header>
+</div>
+<main class="m-v-40">
+    <ul class="nav nav-tabs tabs" role="tablist">
+        <li class="nav-item w-50" style="cursor: pointer">
+            <p data-tab-name="login" class="nav-link active">Login</p>
+        </li>
+        <li class="nav-item w-50" style="cursor: pointer">
+            <p data-tab-name="sign" class="nav-link" role="tab">Sign In</p>
+        </li>
+    </ul>
+    <ul class="tab-content pt-5 tabs-content" id="tab-content">
+        <li data-tab-text="login" class="tab-pane tab-1 active">
+            <div class="container">
+                <form id="loginForm">
+                    <h1 class="h3 mb-3 fw-normal">Login</h1>
+                    <div class="form-floating mt-2 mb-2">
+                        <input type="text" class="form-control" id="floatingInputLogin" placeholder="username">
+                        <label for="floatingInputLogin">Username</label>
+                    </div>
+                    <div class="form-floating mt-2 mb-2">
+                        <input type="password" class="form-control" id="floatingPasswordLogin" placeholder="password">
+                        <label for="floatingPasswordLogin">Password</label>
+                    </div>
+                    <p class="list-group-item list-group-item-action list-group-item-danger p-2" hidden id="errorAuthMessage">Username or password is incorrect</p>
+                    <button class="w-100 btn btn-lg btn-primary" id="submitLogin" disabled type="button">Login</button>
+                    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+                </form>
+            </div>
+        </li>
+        <li data-tab-text="sign" class="tab-pane tab-2">
+            <form id="signInForm">
+                <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="text" class="form-control" id="floatingInputNameSignIn" placeholder="username">
+                    <label for="floatingInputNameSignIn">Username</label>
+                </div>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="email" class="form-control" id="floatingInputEmailSignIn" placeholder="name@example.com">
+                    <label for="floatingInputEmailSignIn">Email address</label>
+                </div>
+                <div class="form-floating mt-2 mb-2">
+                    <input type="password" class="form-control" id="floatingPasswordSignIn" placeholder="Password">
+                    <label for="floatingPasswordSignIn">Password</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" disabled id="submitSignIn" type="button">Create account</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+            </form>
+        </li>
+    </ul>
+
+</main>
+<script>
+    // tabs:
+    const tabs = document.querySelector('.tabs');
+    const text = document.querySelectorAll('.tabs-content li');
+    tabs.addEventListener('click', function (event) {
+        event.target.closest('ul').querySelector('.active').classList.remove('active');
+        event.target.classList.add('active');
+        const target = event.target.dataset.tabName;
+        text.forEach(item => {
+            item.classList.remove('active');
+            if (target === item.dataset.tabText) {
+                item.classList.add('active');
+            }
+        })
+    })
+
+    // validation login
+    const usernameLogin = document.getElementById("floatingInputLogin");
+    const passwordLogin = document.getElementById("floatingPasswordLogin");
+    const submitLoginBtn = document.getElementById("submitLogin");
+    const loginForm = document.getElementById('loginForm');
+    const loginFormInputs = loginForm.querySelectorAll('input');
+    function submitLoginForm(formData) {
+        formData.operation = "login";
+        return new Promise((resolve, reject) => {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    console.log(response);
+                    if (response?.status === 200) {
+                        return response.json();
+                    } else {
+                        document.getElementById("errorAuthMessage")?.removeAttribute("hidden");
+                        throw new Error("Error during login!");
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    if (!data?.admin && formData?.username) {
+                        localStorage.setItem("user", formData?.username);
+                    } else {
+                        localStorage.removeItem('user');
+                        localStorage.setItem("admin", "admin");
+                    }
+                    window.location.pathname = "/movies";
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        });
+    }
+    function toggleSubmitLogin() {
+        if (usernameLogin?.value?.length > 0 && passwordLogin?.value?.length > 0) {
+            submitLoginBtn.removeAttribute('disabled');
+        } else {
+            submitLoginBtn.setAttribute('disabled', true);
+        }
+    }
+    loginFormInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            toggleSubmitLogin();
+        });
+    });
+    submitLoginBtn.addEventListener('click', function() {
+        const formData = new FormData(loginForm);
+        formData.username = usernameLogin?.value;
+        formData.password = passwordLogin?.value;
+        if(!submitLoginBtn.disable) {
+            submitLoginForm(formData)
+                .then(responseData => {
+                    console.log('Form submitted successfully');
+                })
+                .catch(error => {
+                    console.log('Error submitting form:', error);
+                });
+        }
+    });
+
+    // validation signIn
+    function submitSignInForm(formData) {
+        console.log(formData);
+        formData.operation = "signIn";
+        return new Promise((resolve, reject) => {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    console.log(response);
+                    if (response?.status === 200 && formData?.username) {
+                        localStorage.setItem('user', formData?.username);
+                        window.location.pathname = "/movies";
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        });
+    }
+    const usernameSignIn = document.getElementById("floatingInputNameSignIn");
+    const emailSignIn = document.getElementById("floatingInputEmailSignIn");
+    const passwordSignIn = document.getElementById("floatingPasswordSignIn");
+    const submitSignInBtn = document.getElementById("submitSignIn");
+    const signInForm = document.getElementById('signInForm');
+    const signInFormInputs = signInForm.querySelectorAll('input');
+    function toggleSubmitSignIn() {
+        if (usernameSignIn?.value?.length > 0 && emailSignIn?.value?.length > 0 && passwordSignIn?.value?.length) {
+            submitSignInBtn.removeAttribute('disabled');
+        } else {
+            submitSignInBtn.setAttribute('disabled', true);
+        }
+    }
+    signInFormInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            toggleSubmitSignIn();
+        });
+    });
+    submitSignInBtn.addEventListener('click', function() {
+        const formData = new FormData(signInForm);
+        formData.username = usernameSignIn?.value;
+        formData.password = passwordSignIn?.value;
+        formData.email = emailSignIn?.value;
+        if(!submitSignInBtn.disable) {
+            submitSignInForm(formData)
+                .then(responseData => {
+                    console.log('Form submitted successfully');
+                })
+                .catch(error => {
+                    console.log('Error submitting form:', error);
+                });
+        }
+    });
+
+</script>
 </body>
 </html>

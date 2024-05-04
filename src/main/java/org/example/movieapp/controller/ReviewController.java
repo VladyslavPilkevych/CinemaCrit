@@ -22,12 +22,12 @@ public class ReviewController {
     public String showReviews(@PathVariable("movieId") Long movieId, Model model) {
         List<Review> reviews = reviewService.getReviewsByMovieId(movieId);
         model.addAttribute("reviews", reviews);
-        return "reviews_list";
+        return "movie_review";
     }
 
-    @PostMapping("/reviews/add")
-    public String addReview(@ModelAttribute("review") Review review) {
-        reviewService.addReview(review);
+    @PostMapping("/reviews/{movieId}/add")
+    public String addReview(@PathVariable("movieId") Long movieId, @ModelAttribute("review") Review review) {
+        reviewService.addReview(movieId, review);
         return "redirect:/reviews/" + review.getMovieId();
     }
 }
