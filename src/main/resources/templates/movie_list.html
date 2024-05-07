@@ -100,11 +100,11 @@
                             <title>Placeholder</title>
                             <rect width="100%" height="100%" fill="#55595c"/>
                             <!-- Check if there is image data available for the movie -->
-                            <th:block th:if="${movie.imageData != null}">
-                                <image xlink:href="data:image/png;base64,${movie.imageData}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
+                            <th:block th:if="${movie.image != null}">
+                                <image xlink:href="data:image/png;base64,${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
                             </th:block>
                             <!-- If there's no image data, display a default placeholder image or leave it blank -->
-                            <th:block th:unless="${movie.imageData != null}">
+                            <th:block th:unless="${movie.image != null}">
                                 <!-- Display a default placeholder image -->
                                 <!--<image xlink:href="default-placeholder-image.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>-->
                                 <!-- Leave it blank -->
@@ -118,7 +118,7 @@
                                 <div class="btn-group">
                                     <a th:href="@{/movies/?id={id}(id=${movie.id})}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
                                     <p th:text="${movie.id}" class="movieId" hidden></p>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden>Edit</button>
                                     <button type="button" class="btn btn-sm btn-outline-danger" hidden>Delete</button>
                                 </div>
                                 <small class="text-muted" th:text="${movie.year}"></small>
@@ -217,6 +217,7 @@
         const movieIdInput = document.getElementById('movieIdInput');
 
         editImageButtons.forEach(btn => {
+            btn.removeAttribute("hidden");
             btn.addEventListener('click', function() {
                 btn.removeAttribute("hidden");
                 const movieId = btn.parentElement.querySelector('.movieId').textContent;
@@ -226,31 +227,70 @@
 
         saveImageBtn.addEventListener('click', function() {
             const formData = new FormData(editImageForm);
-            console.log(`/movies/${movieIdInput.value}/image`);
-            fetch(`/movies/${movieIdInput.value}/image`, {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    console.log(response);
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Error saving image:', response.statusText);
-                    }
+            console.log(`/add/image/${movieIdInput.value}`);
+            new Promise((resolve, reject) => {
+                fetch(`/add/image/${movieIdInput.value}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: formData
                 })
-                .catch(error => {
-                    console.error('Error saving image:', error);
-                });
+                    .then(response => {
+                        console.log(response);
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Error saving image:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving image:', error);
+                    });
+            });
         });
     }
 
     // select
+    // const filterSelect = document.getElementById('filterSelect');
+    // filterSelect.addEventListener('change', function() {
+    //     const selectedFilter = filterSelect.value;
+    //     window.location.href = `/movies?filter=${selectedFilter}`;
+    // });
     const filterSelect = document.getElementById('filterSelect');
     filterSelect.addEventListener('change', function() {
         const selectedFilter = filterSelect.value;
-        window.location.href = `/movies?filter=${selectedFilter}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/movies?filter=' + selectedFilter, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(response, 'text/html');
+                const movieListContainer = document.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                const newMovieList = doc.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                movieListContainer.innerHTML = newMovieList.innerHTML;
+                const newUrl = '/movies?filter=' + selectedFilter;
+                history.pushState({ path: newUrl }, '', newUrl);
+                if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
+                    const deleteUsersButtons = [...document.getElementsByClassName("btn-outline-danger")];
+                    deleteUsersButtons.forEach((btn) => {
+                        btn.removeAttribute("hidden");
+                    });
+
+                    const editImageButtons = [...document.getElementsByClassName("btn-outline-primary")];
+
+                    editImageButtons.forEach(btn => {
+                        btn.removeAttribute("hidden");
+                    });
+                }
+            } else {
+                console.error('Request failed. Status: ' + xhr.status);
+            }
+        };
+        xhr.send();
     });
+
 </script>
 
 </body>

@@ -15,15 +15,15 @@ public class Movie {
     private String description;
     private int year;
 
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] imageData;
+    @Column(columnDefinition = "BLOB")
+    private byte[] image;
 
-    public byte[] getImageData() {
-        return imageData;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @OneToMany(mappedBy = "movieId", cascade = CascadeType.ALL)

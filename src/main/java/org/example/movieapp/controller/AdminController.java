@@ -6,11 +6,14 @@ import org.example.movieapp.service.AuthenticationService;
 import org.example.movieapp.service.MovieService;
 import org.example.movieapp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 public class AdminController {
@@ -50,5 +53,28 @@ public class AdminController {
         movie.setId(null);
         movieRepository.save(movie);
         return "redirect:/movies";
+    }
+
+    @PostMapping("/add/image/{id}")
+    public ResponseEntity<String> uploadMovieImage(@PathVariable("id") Long movieId,
+                                                   @RequestParam("image") MultipartFile image) {
+        if (image.isEmpty()) {
+            return ResponseEntity.badRequest().body("Image is empty");
+        }
+        try {
+            Movie movie = movieService.getMovieById(movieId);
+            if (movie == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            byte[] imageData = image.getBytes();
+            movie.setImage(imageData);
+            movieService.updateMovie(movie);
+
+            return ResponseEntity.ok("Image uploaded successfully");
+        } catch (IOException error) {
+            error.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+        }
     }
 }
