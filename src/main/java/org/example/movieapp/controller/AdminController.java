@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 
@@ -57,18 +59,22 @@ public class AdminController {
 
     @PostMapping("/add/image/{id}")
     public ResponseEntity<String> uploadMovieImage(@PathVariable("id") Long movieId,
-                                                   @RequestParam("image") MultipartFile image) {
+        @RequestBody String image) {
+//        System.out.println("Request Body: " + image);
+
+//                                                   @RequestBody MultipartFile image) {
         if (image.isEmpty()) {
             return ResponseEntity.badRequest().body("Image is empty");
         }
         try {
             Movie movie = movieService.getMovieById(movieId);
             if (movie == null) {
-                return ResponseEntity.notFound().build();
+                throw new IOException();
+//                return ResponseEntity.notFound().build();
             }
 
-            byte[] imageData = image.getBytes();
-            movie.setImage(imageData);
+//            byte[] imageData = image.getBytes();
+            movie.setImage(image);
             movieService.updateMovie(movie);
 
             return ResponseEntity.ok("Image uploaded successfully");

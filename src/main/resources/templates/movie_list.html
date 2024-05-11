@@ -101,7 +101,7 @@
                             <rect width="100%" height="100%" fill="#55595c"/>
                             <!-- Check if there is image data available for the movie -->
                             <th:block th:if="${movie.image != null}">
-                                <image xlink:href="data:image/png;base64,${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
+                                <image th:href="${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
                             </th:block>
                             <!-- If there's no image data, display a default placeholder image or leave it blank -->
                             <th:block th:unless="${movie.image != null}">
@@ -137,15 +137,15 @@
                         <div class="modal-body">
                             <form id="editImageForm" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="imageInput" class="form-label">Choose Image:</label>
-                                    <input type="file" class="form-control" id="imageInput" name="image">
+                                    <label for="image" class="form-label">Choose Image:</label>
+                                    <input type="file" class="form-control" id="image" name="image">
                                 </div>
                                 <input type="hidden" id="movieIdInput">
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="saveImageBtn">Save Changes</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveImageBtn">Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -216,6 +216,7 @@
         const editImageForm = document.getElementById('editImageForm');
         const movieIdInput = document.getElementById('movieIdInput');
 
+
         editImageButtons.forEach(btn => {
             btn.removeAttribute("hidden");
             btn.addEventListener('click', function() {
@@ -224,17 +225,36 @@
                 movieIdInput.value = movieId;
             });
         });
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    console.log(reader.result);
+                    resolve(reader.result);
+                };
+                reader.onerror = function (error) {
+                    reject(error);
+                };
+            });
+        }
 
         saveImageBtn.addEventListener('click', function() {
             const formData = new FormData(editImageForm);
-            console.log(`/add/image/${movieIdInput.value}`);
-            new Promise((resolve, reject) => {
-                fetch(`/add/image/${movieIdInput.value}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: formData
+            const movieId = movieIdInput.value;
+            formData.append("movieId", movieId);
+
+            console.log(formData.get("image"));
+            // console.log(getBase64(formData.get("image")));
+            getBase64(formData.get("image"))
+                .then(base64Data => {
+                    console.log("base64Data:", base64Data);
+                    fetch(`/add/image/${movieId}`, {
+                        method: 'POST',
+                        body: base64Data
+                    });
+                    // body: formData
+                    // body: {image: getBase64(formData.get("image"))}
                 })
                     .then(response => {
                         console.log(response);
@@ -248,7 +268,6 @@
                         console.error('Error saving image:', error);
                     });
             });
-        });
     }
 
     // select

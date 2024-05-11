@@ -16,13 +16,13 @@ public class Movie {
     private int year;
 
     @Column(columnDefinition = "BLOB")
-    private byte[] image;
+    private String image;
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
