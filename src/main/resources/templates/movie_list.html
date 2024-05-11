@@ -45,7 +45,7 @@
 <!--    </li>-->
 <!--</ul>-->
 <div class="container fixed-top">
-    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <header class="w-100 bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
         </ul>
@@ -96,21 +96,56 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div th:each="movie : ${movies}" class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em" th:text="${movie.title}"></text></svg>
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"/>
+                            <!-- Check if there is image data available for the movie -->
+                            <th:block th:if="${movie.image != null}">
+                                <image th:href="${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
+                            </th:block>
+                            <!-- If there's no image data, display a default placeholder image or leave it blank -->
+                            <th:block th:unless="${movie.image != null}">
+                                <!-- Display a default placeholder image -->
+                                <!--<image xlink:href="default-placeholder-image.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>-->
+                                <!-- Leave it blank -->
+                            </th:block>
+                            <!-- End of image -->
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em" th:text="${movie.title}"></text>
+                        </svg>
                         <div class="card-body">
-<!--                            <h2 th:text="${movie.title}"></h2>-->
                             <p class="card-text" th:text="${movie.description}"></p>
-<!--                            <p>Year: <span th:text="${movie.year}"></span></p>-->
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-<!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
                                     <a th:href="@{/movies/?id={id}(id=${movie.id})}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
                                     <p th:text="${movie.id}" class="movieId" hidden></p>
-                                    <button type="button" class="btn btn-sm btn-danger" hidden>Delete</button>
-<!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden>Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" hidden>Delete</button>
                                 </div>
                                 <small class="text-muted" th:text="${movie.year}"></small>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Movie Image</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editImageForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Choose Image:</label>
+                                    <input type="file" class="form-control" id="image" name="image">
+                                </div>
+                                <input type="hidden" id="movieIdInput">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveImageBtn">Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -145,7 +180,7 @@
 <script src="/js/admin.js"></script>
 <script>
     if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
-        const deleteUsersButtons = [...document.getElementsByClassName("btn-danger")];
+        const deleteUsersButtons = [...document.getElementsByClassName("btn-outline-danger")];
         const addMovieForm = document.getElementById("addMovieForm");
         addMovieForm.removeAttribute("hidden");
         deleteUsersButtons.forEach((btn) => {
@@ -175,14 +210,106 @@
                 });
             });
         });
+
+        const editImageButtons = [...document.getElementsByClassName("btn-outline-primary")];
+        const saveImageBtn = document.getElementById('saveImageBtn');
+        const editImageForm = document.getElementById('editImageForm');
+        const movieIdInput = document.getElementById('movieIdInput');
+
+
+        editImageButtons.forEach(btn => {
+            btn.removeAttribute("hidden");
+            btn.addEventListener('click', function() {
+                btn.removeAttribute("hidden");
+                const movieId = btn.parentElement.querySelector('.movieId').textContent;
+                movieIdInput.value = movieId;
+            });
+        });
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    console.log(reader.result);
+                    resolve(reader.result);
+                };
+                reader.onerror = function (error) {
+                    reject(error);
+                };
+            });
+        }
+
+        saveImageBtn.addEventListener('click', function() {
+            const formData = new FormData(editImageForm);
+            const movieId = movieIdInput.value;
+            formData.append("movieId", movieId);
+
+            console.log(formData.get("image"));
+            // console.log(getBase64(formData.get("image")));
+            getBase64(formData.get("image"))
+                .then(base64Data => {
+                    console.log("base64Data:", base64Data);
+                    fetch(`/add/image/${movieId}`, {
+                        method: 'POST',
+                        body: base64Data
+                    });
+                    // body: formData
+                    // body: {image: getBase64(formData.get("image"))}
+                })
+                    .then(response => {
+                        console.log(response);
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Error saving image:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving image:', error);
+                    });
+            });
     }
 
     // select
+    // const filterSelect = document.getElementById('filterSelect');
+    // filterSelect.addEventListener('change', function() {
+    //     const selectedFilter = filterSelect.value;
+    //     window.location.href = `/movies?filter=${selectedFilter}`;
+    // });
     const filterSelect = document.getElementById('filterSelect');
     filterSelect.addEventListener('change', function() {
         const selectedFilter = filterSelect.value;
-        window.location.href = `/movies?filter=${selectedFilter}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/movies?filter=' + selectedFilter, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(response, 'text/html');
+                const movieListContainer = document.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                const newMovieList = doc.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                movieListContainer.innerHTML = newMovieList.innerHTML;
+                const newUrl = '/movies?filter=' + selectedFilter;
+                history.pushState({ path: newUrl }, '', newUrl);
+                if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
+                    const deleteUsersButtons = [...document.getElementsByClassName("btn-outline-danger")];
+                    deleteUsersButtons.forEach((btn) => {
+                        btn.removeAttribute("hidden");
+                    });
+
+                    const editImageButtons = [...document.getElementsByClassName("btn-outline-primary")];
+
+                    editImageButtons.forEach(btn => {
+                        btn.removeAttribute("hidden");
+                    });
+                }
+            } else {
+                console.error('Request failed. Status: ' + xhr.status);
+            }
+        };
+        xhr.send();
     });
+
 </script>
 
 </body>

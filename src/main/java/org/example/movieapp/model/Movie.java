@@ -15,6 +15,17 @@ public class Movie {
     private String description;
     private int year;
 
+    @Column(columnDefinition = "BLOB")
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @OneToMany(mappedBy = "movieId", cascade = CascadeType.ALL)
     private List<Review> reviews;
 

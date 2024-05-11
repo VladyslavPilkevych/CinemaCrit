@@ -75,4 +75,5 @@ public class MovieController {
         reviewRepository.save(review);
         return "redirect:/movies/?id="+movieId;
     }
+
 }
