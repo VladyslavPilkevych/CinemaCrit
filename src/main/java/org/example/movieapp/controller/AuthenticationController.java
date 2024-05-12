@@ -3,7 +3,7 @@ package org.example.movieapp.controller;
 import org.example.movieapp.factory.PersonFactory;
 import org.example.movieapp.model.User;
 import org.example.movieapp.repository.UserRepository;
-import org.example.movieapp.service.AuthenticationService;
+import org.example.movieapp.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

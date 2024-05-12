@@ -2,7 +2,7 @@ package org.example.movieapp.controller;
 
 import org.example.movieapp.factory.ReviewFactory;
 import org.example.movieapp.model.Review;
-import org.example.movieapp.service.ReviewService;
+import org.example.movieapp.service.impl.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
