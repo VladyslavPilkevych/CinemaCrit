@@ -7,6 +7,7 @@ import org.example.movieapp.service.impl.AuthenticationService;
 import org.example.movieapp.service.impl.MovieService;
 import org.example.movieapp.service.impl.ReviewService;
 import org.example.movieapp.service.proxy.MovieProxy;
+import org.example.movieapp.service.proxy.MovieProxyImpl;
 import org.example.movieapp.util.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,8 @@ public class AdminController {
     private AuthenticationService authenticationService;
     @Autowired
     private MovieRepository movieRepository;
-    @Autowired
-    private MovieProxy movieProxy;
+
+    final private MovieProxy movieProxy = new MovieProxyImpl();
 
     final private MovieFactory movieFactory = new MovieFactory();
 
@@ -63,6 +64,10 @@ public class AdminController {
         newMovie.setDescription(movie.getDescription());
         newMovie.setYear(movie.getYear());
         movieProxy.addMovie(newMovie);
+//        List<Admin> admins = authenticationService.getAllAdmins();
+//        for (Admin admin : admins) {
+//            movie.addObserver(admin);
+//        }
         return "redirect:/movies";
     }
 
