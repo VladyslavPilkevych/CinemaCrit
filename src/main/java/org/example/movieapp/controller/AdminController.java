@@ -64,10 +64,10 @@ public class AdminController {
         newMovie.setDescription(movie.getDescription());
         newMovie.setYear(movie.getYear());
         movieProxy.addMovie(newMovie);
-//        List<Admin> admins = authenticationService.getAllAdmins();
-//        for (Admin admin : admins) {
-//            movie.addObserver(admin);
-//        }
+//        List<Admin> admins = authenticationService.getAllAdmins(); // TODO: implement getAllAdmins
+//        for (Admin admin : admins) { // TODO: uncomment
+//            movie.addObserver(admin); // TODO: uncomment
+//        } // TODO: uncomment
         return "redirect:/movies";
     }
 
