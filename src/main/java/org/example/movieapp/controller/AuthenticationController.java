@@ -1,5 +1,6 @@
 package org.example.movieapp.controller;
 
+import org.example.movieapp.factory.PersonFactory;
 import org.example.movieapp.model.User;
 import org.example.movieapp.repository.UserRepository;
 import org.example.movieapp.service.AuthenticationService;
@@ -16,20 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Controller
 public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
-
     @Autowired
     private UserRepository authenticationRepository;
+
+    final private PersonFactory personFactory = new PersonFactory();
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         List<User> users = authenticationService.getAllUsers();
-        model.addAttribute("user", new User());
+        model.addAttribute("user", personFactory.createUser());
         model.addAttribute("usersList", users);
         return "login";
     }

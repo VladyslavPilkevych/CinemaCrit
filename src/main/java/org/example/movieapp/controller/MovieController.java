@@ -1,5 +1,6 @@
 package org.example.movieapp.controller;
 
+import org.example.movieapp.factory.ReviewFactory;
 import org.example.movieapp.model.Movie;
 import org.example.movieapp.model.Review;
 import org.example.movieapp.repository.ReviewRepository;
@@ -23,6 +24,8 @@ public class MovieController {
     private ReviewService reviewService;
     @Autowired
     private ReviewRepository reviewRepository;
+
+    final private ReviewFactory reviewFactory = new ReviewFactory();
 
     @GetMapping("/movies")
     public String showMovieList(@RequestParam(name = "filter", required = false) String filter, Model model) {
@@ -58,7 +61,7 @@ public class MovieController {
 //        System.out.println(reviews.get(0).getCreatedDate());
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviews);
-        model.addAttribute("review", new Review());
+        model.addAttribute("review", reviewFactory.createReview());
         model.addAttribute("dateUtils", new DateUtils());
         return "movie_details";
     }

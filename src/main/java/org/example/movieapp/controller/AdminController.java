@@ -1,10 +1,12 @@
 package org.example.movieapp.controller;
 
+import org.example.movieapp.factory.MovieFactory;
 import org.example.movieapp.model.Movie;
 import org.example.movieapp.repository.MovieRepository;
 import org.example.movieapp.service.AuthenticationService;
 import org.example.movieapp.service.MovieService;
 import org.example.movieapp.service.ReviewService;
+import org.example.movieapp.util.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.IOException;
 
 @Controller
 public class AdminController {
@@ -28,6 +29,8 @@ public class AdminController {
     private AuthenticationService authenticationService;
     @Autowired
     private MovieRepository movieRepository;
+
+    final private MovieFactory movieFactory = new MovieFactory();
 
     @GetMapping("/settings")
     public String showMovieList(Model model) {
@@ -52,8 +55,11 @@ public class AdminController {
 
     @PostMapping("/add/movie")
     public String addMovie(Movie movie) {
-        movie.setId(null);
-        movieRepository.save(movie);
+        Movie newMovie = movieFactory.createMovie();
+        newMovie.setTitle(movie.getTitle());
+        newMovie.setDescription(movie.getDescription());
+        newMovie.setYear(movie.getYear());
+        movieService.addMovie(newMovie);
         return "redirect:/movies";
     }
 
