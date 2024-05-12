@@ -1,9 +1,14 @@
 package org.example.movieapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import org.example.movieapp.util.MovieObserver;
 
 @Entity
-public class Admin extends Person {
+public class Admin extends Person implements MovieObserver {
+    @Override
+    public void update(Movie movie) {
+        System.out.println("Admin received update about movie: " + movie.getTitle());
+    }
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

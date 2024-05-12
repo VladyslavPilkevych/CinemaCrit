@@ -1,7 +1,12 @@
 package org.example.movieapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import org.example.movieapp.util.MovieObserver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -72,5 +77,21 @@ public class Movie extends Blank {
         }
 
         return totalRating / reviews.size();
+    }
+
+    private static List<MovieObserver> observers = new ArrayList<>();
+
+    public void addObserver(MovieObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(MovieObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        for (MovieObserver observer : observers) {
+            observer.update(this);
+        }
     }
 }
