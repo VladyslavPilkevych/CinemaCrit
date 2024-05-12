@@ -3,9 +3,10 @@ package org.example.movieapp.controller;
 import org.example.movieapp.factory.MovieFactory;
 import org.example.movieapp.model.Movie;
 import org.example.movieapp.repository.MovieRepository;
-import org.example.movieapp.service.AuthenticationService;
-import org.example.movieapp.service.MovieService;
-import org.example.movieapp.service.ReviewService;
+import org.example.movieapp.service.impl.AuthenticationService;
+import org.example.movieapp.service.impl.MovieService;
+import org.example.movieapp.service.impl.ReviewService;
+import org.example.movieapp.service.proxy.MovieProxy;
 import org.example.movieapp.util.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class AdminController {
     private AuthenticationService authenticationService;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private MovieProxy movieProxy;
 
     final private MovieFactory movieFactory = new MovieFactory();
 
@@ -49,7 +52,7 @@ public class AdminController {
     @PostMapping("/delete/movie")
     public String removeMovie(@RequestBody String movieId) {
         Long movieIdLong = Long.parseLong(movieId);
-        movieService.deleteMovie(movieIdLong);
+        movieProxy.deleteMovie(movieIdLong);
         return "redirect:/settings";
     }
 
@@ -59,7 +62,7 @@ public class AdminController {
         newMovie.setTitle(movie.getTitle());
         newMovie.setDescription(movie.getDescription());
         newMovie.setYear(movie.getYear());
-        movieService.addMovie(newMovie);
+        movieProxy.addMovie(newMovie);
         return "redirect:/movies";
     }
 
@@ -80,8 +83,9 @@ public class AdminController {
             }
 
 //            byte[] imageData = image.getBytes();
-            movie.setImage(image);
-            movieService.updateMovie(movie);
+//            movie.setImage(image);
+//            movieService.updateMovie(movie);
+            movieProxy.updateMovieImage(movieId, image);
 
             return ResponseEntity.ok("Image uploaded successfully");
         } catch (IOException error) {
