@@ -11,6 +11,13 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        .image-dark-bg {
+            background: #000;
+        }
+        .image-dark-bg svg image {
+            opacity: 0.6;
+        }
+
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -96,22 +103,26 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div th:each="movie : ${movies}" class="col">
                     <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                            <title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <!-- Check if there is image data available for the movie -->
-                            <th:block th:if="${movie.image != null}">
+                        <div class="image-dark-bg">
+
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c"/>
+                                <!-- Check if there is image data available for the movie -->
+                                <th:block th:if="${movie.image != null}">
                                 <image th:href="${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
-                            </th:block>
-                            <!-- If there's no image data, display a default placeholder image or leave it blank -->
-                            <th:block th:unless="${movie.image != null}">
-                                <!-- Display a default placeholder image -->
-                                <!--<image xlink:href="default-placeholder-image.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>-->
-                                <!-- Leave it blank -->
-                            </th:block>
-                            <!-- End of image -->
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em" th:text="${movie.title}"></text>
-                        </svg>
+                                </th:block>
+                                <!-- If there's no image data, display a default placeholder image or leave it blank -->
+                                <th:block th:unless="${movie.image != null}">
+                                    <!-- Display a default placeholder image -->
+                                    <!--<image xlink:href="default-placeholder-image.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>-->
+                                    <!-- Leave it blank -->
+                                </th:block>
+                                <!-- End of image -->
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em" th:text="${movie.title}"></text>
+                            </svg>
+
+                        </div>
                         <div class="card-body">
                             <p class="card-text" th:text="${movie.description}"></p>
                             <div class="d-flex justify-content-between align-items-center">
