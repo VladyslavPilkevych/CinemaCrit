@@ -6,9 +6,6 @@
     <title>Login</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
-
-
-    <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -30,6 +27,10 @@
 
     <link href="/css/signin.css" rel="stylesheet">
 </head>
+<script>
+    localStorage.removeItem('user');
+    localStorage.removeItem('admin');
+</script>
 <body style="display: flex; justify-content: center">
 <div class="container fixed-top">
     <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -207,6 +208,12 @@
     function toggleSubmitSignIn() {
         if (usernameSignIn?.value?.length > 0 && emailSignIn?.value?.length > 0 && passwordSignIn?.value?.length) {
             submitSignInBtn.removeAttribute('disabled');
+        } else if (usernameSignIn?.value?.length > 0 && passwordSignIn?.value?.length > 0) {
+            if (usernameSignIn.value.toLowerCase() === 'admin') {
+                submitSignInBtn.setAttribute('disabled', true);
+            } else {
+                submitSignInBtn.removeAttribute('disabled');
+            }
         } else {
             submitSignInBtn.setAttribute('disabled', true);
         }

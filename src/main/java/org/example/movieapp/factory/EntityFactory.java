@@ -1,3 +1,6 @@
+/**
+ * Interface for entity factories.
+ */
 package org.example.movieapp.factory;
 
 import org.example.movieapp.model.Admin;

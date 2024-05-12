@@ -1,3 +1,6 @@
+/**
+ * Controller class for handling movie-related operations.
+ */
 package org.example.movieapp.controller;
 
 import org.example.movieapp.factory.ReviewFactory;
@@ -27,10 +30,15 @@ public class MovieController {
 
     final private ReviewFactory reviewFactory = new ReviewFactory();
 
+    /**
+     * Display the list of movies.
+     *
+     * @param filter Filter parameter to sort movies
+     * @param model  Model to hold attributes for the view
+     * @return The view name for the movie list page
+     */
     @GetMapping("/movies")
     public String showMovieList(@RequestParam(name = "filter", required = false) String filter, Model model) {
-//        System.out.printf("show movies list ==> ");
-//        model.addAttribute("movies", movieService.getAllMovies());
         List<Movie> movies;
         if ("date".equals(filter)) {
             movies = movieService.getMoviesFilteredByDate();
@@ -42,15 +50,16 @@ public class MovieController {
             movies = movieService.getAllMovies();
         }
         model.addAttribute("movies", movies);
-//        System.out.println(movieService.getAllMovies());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            model.addAttribute("auth", authentication.getName());
-//            System.out.printf(authentication.getName());
-//        }
         return "movie_list";
     }
 
+    /**
+     * Display details of a specific movie.
+     *
+     * @param id    ID of the movie to display details
+     * @param model Model to hold attributes for the view
+     * @return The view name for the movie details page
+     */
     @GetMapping("/movies/")
     public String showMovieDetails(@RequestParam(name="id", defaultValue = "") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
@@ -58,7 +67,6 @@ public class MovieController {
         if (movie == null) {
             return "redirect:/movies";
         }
-//        System.out.println(reviews.get(0).getCreatedDate());
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviews);
         model.addAttribute("review", reviewFactory.createReview());
@@ -66,11 +74,16 @@ public class MovieController {
         return "movie_details";
     }
 
+    /**
+     * Add a review for a movie.
+     *
+     * @param movieId ID of the movie to add review
+     * @param review  Review object containing review details
+     * @return Redirect to the movie details page after adding review
+     */
     @PostMapping("/movies/{id}")
     public String addReview(@PathVariable(name = "id") String movieId, @RequestBody String body, Review review) {
         Long movieIdLong = Long.parseLong(movieId);
-//        System.out.println(body);
-//        reviewService.addReview(movieId, review);
         review.setId(null);
         review.setCreatedDate(LocalDateTime.now());
         review.setMovieId(movieIdLong);

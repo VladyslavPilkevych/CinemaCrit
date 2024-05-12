@@ -1,3 +1,6 @@
+/**
+ * Model class representing a comment.
+ */
 package org.example.movieapp.model;
 
 import java.time.LocalDateTime;
