@@ -142,6 +142,7 @@
                 </div>
             </div>
             <form action="/add/movie" id="addMovieForm" method="post" hidden>
+                <h2>Add movie</h2>
                 <label for="title">Title:</label><br>
                 <input type="text" id="title" name="title" class="form-control"><br>
                 <label for="year">Year:</label><br>
@@ -206,7 +207,6 @@
         const saveImageBtn = document.getElementById('saveImageBtn');
         const editImageForm = document.getElementById('editImageForm');
         const movieIdInput = document.getElementById('movieIdInput');
-
 
         editImageButtons.forEach(btn => {
             btn.removeAttribute("hidden");
