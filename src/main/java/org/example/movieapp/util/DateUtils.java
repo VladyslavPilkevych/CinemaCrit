@@ -1,8 +1,17 @@
+/**
+ * Utility class for date-related operations.
+ */
 package org.example.movieapp.util;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class DateUtils {
+    /**
+     * Gets a string representation of time elapsed since a given date-time.
+     *
+     * @param creationDateTime the creation date-time
+     * @return a string representing the time elapsed since the creation date-time
+     */
     public static String getAgoString(LocalDateTime creationDateTime) {
         LocalDateTime currentDateTime = LocalDateTime.now();
 

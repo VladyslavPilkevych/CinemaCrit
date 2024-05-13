@@ -1,55 +1,49 @@
+/**
+ * Model class representing a movie.
+ */
 package org.example.movieapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import org.example.movieapp.util.MovieObserver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Movie {
+public class Movie extends Blank {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "BLOB")
+    private String image;
 
-    private String title;
-    private String description;
-    private int year;
+    /**
+     * Gets the image of the movie.
+     *
+     * @return the image of the movie
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * Sets the image of the movie.
+     *
+     * @param image the image of the movie
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     @OneToMany(mappedBy = "movieId", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
+    /**
+     * Calculates the average rating of the movie based on its reviews.
+     *
+     * @return the average rating of the movie
+     */
     public double getAverageRating() {
         if (reviews == null || reviews.isEmpty()) {
             return 0.0;
@@ -61,5 +55,34 @@ public class Movie {
         }
 
         return totalRating / reviews.size();
+    }
+
+    private static List<MovieObserver> observers = new ArrayList<>();
+
+    /**
+     * Adds an observer to be notified of changes to the movie.
+     *
+     * @param observer the observer to add
+     */
+    public void addObserver(MovieObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Removes an observer from the list of observers.
+     *
+     * @param observer the observer to remove
+     */
+    public void removeObserver(MovieObserver observer) {
+        observers.remove(observer);
+    }
+
+    /**
+     * Notifies all observers of changes to the movie.
+     */
+    public void notifyObservers() {
+        for (MovieObserver observer : observers) {
+            observer.update(this);
+        }
     }
 }

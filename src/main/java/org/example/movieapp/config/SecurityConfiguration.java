@@ -1,65 +1,54 @@
+// TODO: implement
+
 //package org.example.movieapp.config;
 //
-//import org.example.movieapp.util.PasswordEncryptor;
+//import org.example.movieapp.service.impl.CustomUserDetailsService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-//import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//import org.springframework.security.web.SecurityFilterChain;
 //
 //@Configuration
 //@EnableWebSecurity
-//public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfiguration, HttpSecurity> {
+//public class SecurityConfiguration {
 //
 //    @Autowired
-//    private PasswordEncoder passwordEncoder;
+//    private CustomUserDetailsService userDetailsService;
 //
 //    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
-//
-////    @Override
-////    public void configure(HttpSecurity http) throws Exception {
-////        http
-////                .authorizeRequests()
-////                .antMatchers("/login").permitAll()
-////                .anyRequest().authenticated()
-////                .and()
-////                .formLogin()
-////                .loginPage("/login")
-////                .permitAll()
-////                .and()
-////                .logout()
-////                .permitAll();
-////    }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password(passwordEncoder.encode("password"))
-//                .roles("USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(user);
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+//        http.csrf(CsrfConfigurer::disable).authorizeHttpRequests(
+//                        (auth) -> auth
+//                                .requestMatchers("/*").permitAll())
+//                .formLogin(login -> login.loginPage("/login").permitAll().defaultSuccessUrl("/"))
+//                .logout(logout -> {
+//                    logout.logoutUrl("/logout");
+//                    logout.logoutSuccessUrl("/login");
+//                    logout.deleteCookies("JSESSIONID");
+//                    logout.invalidateHttpSession(true);
+//                })
+//                .authenticationProvider(daoAuthenticationProvider());
+//        return http.build();
 //    }
 //
 //    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return (PasswordEncoder) new PasswordEncryptor();
+//    DaoAuthenticationProvider daoAuthenticationProvider() {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//
+//        daoAuthenticationProvider.setPasswordEncoder(bcrypPasswordEncoder());
+//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+//
+//        return daoAuthenticationProvider;
 //    }
 //
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder);
+//    @Bean
+//    PasswordEncoder bcrypPasswordEncoder(){
+//        return new BCryptPasswordEncoder();
 //    }
 //}

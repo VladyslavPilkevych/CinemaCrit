@@ -1,10 +1,18 @@
+/**
+ * Utility class for encrypting passwords.
+ */
 package org.example.movieapp.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncryptor {
-
+    /**
+     * Encrypts a password using SHA-256 algorithm.
+     *
+     * @param password the password to encrypt
+     * @return the encrypted password
+     */
     public static String encryptPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

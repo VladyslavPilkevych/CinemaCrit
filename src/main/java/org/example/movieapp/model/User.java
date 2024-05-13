@@ -1,3 +1,6 @@
+/**
+ * Model class representing a user.
+ */
 package org.example.movieapp.model;
 
 import jakarta.persistence.*;
@@ -5,42 +8,21 @@ import jakarta.persistence.*;
 @Entity
 public class User extends Person {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
-//    private String username;
-//    private String password;
     private String email;
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-
+    /**
+     * Gets the email of the user.
+     *
+     * @return the email of the user
+     */
     public String getEmail() {
         return email;
     }
-
+    /**
+     * Sets the email of the user.
+     *
+     * @param email the email of the user
+     */
     public void setEmail(String email) {
         this.email = email;
     }

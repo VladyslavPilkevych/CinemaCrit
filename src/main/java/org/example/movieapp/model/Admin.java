@@ -1,39 +1,21 @@
+/**
+ * Model class representing an Admin user.
+ */
 package org.example.movieapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import org.example.movieapp.util.MovieObserver;
 
 @Entity
-public class Admin extends Person {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    private String username;
-//    private String password;
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
+public class Admin extends Person implements MovieObserver {
+    /**
+     * Update method to receive notifications about movie updates.
+     *
+     * @param movie the movie that was updated
+     */
+    @Override
+    public void update(Movie movie) {
+        System.out.println("Admin received update about movie: " + movie.getTitle());
+    }
 
 }

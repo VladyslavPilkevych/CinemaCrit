@@ -154,35 +154,6 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
 </head>
 <body>
-<!--<h1>Movie Details</h1>-->
-<!--<div>-->
-<!--    <h2>Title: <span th:text="${movie.title}"></span></h2>-->
-<!--    <p>Description: <span th:text="${movie.description}"></span></p>-->
-<!--    <p>Year: <span th:text="${movie.year}"></span></p>-->
-<!--    <hr />-->
-<!--    <h2>Comments:</h2>-->
-<!--    <ul th:each="review : ${reviews}">-->
-<!--        <li>-->
-<!--            <p th:text="${review.username}"></p>-->
-<!--            <p>Comment: <span th:text="${review.comment}"></span></p>-->
-<!--            <p>Rating: <span th:text="${review.rating}"></span></p>-->
-<!--        </li>-->
-<!--    </ul>-->
-<!--    <hr />-->
-<!--        <form th:action="@{/movies/{id}(id=${movie.id})}" method="post">-->
-<!--            <label for="username">Username:</label><br>-->
-<!--            <input type="text" id="username" name="username" value="user"><br>-->
-<!--            <label for="rating">Rating:</label><br>-->
-<!--            <input type="number" id="rating" name="rating"><br>-->
-<!--            <label for="comment">Comment:</label><br>-->
-<!--            <input type="text" id="comment" name="comment"><br>-->
-<!--            <input type="submit" value="Create">-->
-<!--        </form>-->
-<!--    <hr />-->
-<!--    <a th:href="@{/reviews/{id}(id=${movie.id})}">Go to reviews</a>-->
-<!--    <hr />-->
-<!--    <a href="/movies">Go back to movie list</a>-->
-<!--</div>-->
 <div class="container fixed-top">
     <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -247,10 +218,6 @@
                                             <div class="title h5" style="display: flex">
                                                 <p><b th:text="${review.getUsername()}"></b>&nbsp;made a post.</p>
                                             </div>
-<!--                                            <h6 class="text-muted time">1 minute ago</h6>-->
-<!--                                            <h6 class="text-muted time"  th:text="${T(java.time.LocalDateTime).now()}"></h6>-->
-<!--                                            <h6 class="text-muted time" th:text="${#dates.format(review.getCreatedDate(), 'yyyy-MM-dd HH:mm')}"></h6>-->
-<!--                                            <h6 class="text-muted time" th:text="${getAgoString(review.getCreatedDate())}"></h6>-->
                                             <h6 class="text-muted time" th:text="${dateUtils.getAgoString(review.getCreatedDate())}"></h6>
                                         </div>
                                     </div>
@@ -266,9 +233,8 @@
                         <a href="/login" class="list-group-item list-group-item-action list-group-item-warning p-3 mb-2" id="clientNotAuthInfo" hidden>You must be authorized to post comments</a>
                         <form th:action="@{/movies/{id}(id=${movie.id})}" id="addCommentsForm" method="post" novalidate>
                             <label for="username" hidden>Username:</label>
-                            <!--<br>-->
+
                             <input type="text" id="username" name="username" class="form-control" hidden>
-                            <!--<br>-->
 
                             <label for="rating">Rating:</label><br>
                             <input type="number" id="rating" name="rating" class="form-control" min="1" max="10" required><br>
