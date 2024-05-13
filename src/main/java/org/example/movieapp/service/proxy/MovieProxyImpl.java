@@ -6,9 +6,9 @@ package org.example.movieapp.service.proxy;
 import org.example.movieapp.model.Movie;
 import org.example.movieapp.service.impl.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class MovieProxyImpl implements MovieProxy {
 
     @Autowired

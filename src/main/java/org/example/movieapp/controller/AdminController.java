@@ -10,7 +10,6 @@ import org.example.movieapp.service.impl.AuthenticationService;
 import org.example.movieapp.service.impl.MovieService;
 import org.example.movieapp.service.impl.ReviewService;
 import org.example.movieapp.service.proxy.MovieProxy;
-import org.example.movieapp.service.proxy.MovieProxyImpl;
 import org.example.movieapp.util.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,8 @@ public class AdminController {
     @Autowired
     private MovieRepository movieRepository;
 
-    final private MovieProxy movieProxy = new MovieProxyImpl();
+    @Autowired
+    private MovieProxy movieProxy;
 
     final private MovieFactory movieFactory = new MovieFactory();
 
