@@ -1,3 +1,6 @@
+/**
+ * Controller class for handling user authentication operations.
+ */
 package org.example.movieapp.controller;
 
 import org.example.movieapp.factory.PersonFactory;
@@ -27,6 +30,12 @@ public class AuthenticationController {
 
     final private PersonFactory personFactory = new PersonFactory();
 
+    /**
+     * Display the login form.
+     *
+     * @param model Model to hold attributes for the view
+     * @return The view name for the login page
+     */
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         List<User> users = authenticationService.getAllUsers();
@@ -35,23 +44,21 @@ public class AuthenticationController {
         return "login";
     }
 
+    /**
+     * Perform login operation.
+     *
+     * @param requestData JSON data containing login details
+     * @return ResponseEntity with login status and message
+     */
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> requestData) {
         String operation = (String) requestData.get("operation");
         String username = (String) requestData.get("username");
-//        System.out.printf(username);
         String password = (String) requestData.get("password");
 
         Map<String, Object> responseBody = new HashMap<>();
         if ("login".equals(operation)) {
             if (authenticationService.authenticate(username, password)) {
-//                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//                if ("admin".equals(username)) {
-//                    return ResponseEntity.ok("Administrator logged in");
-//                } else {
-//                    return ResponseEntity.ok("Regular user logged in");
-//                }
                 boolean isAdmin = "admin".equals(username);
                 responseBody.put("admin", isAdmin);
                 responseBody.put("message", "Successful login");
@@ -77,8 +84,6 @@ public class AuthenticationController {
                 user.setUsername(username);
                 user.setEmail(email);
                 authenticationRepository.save(user);
-//                Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
                 responseBody.put("admin", false);
                 responseBody.put("message", "Successful login");
                 return ResponseEntity.ok(responseBody);
@@ -90,6 +95,11 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Log out the current user.
+     *
+     * @return Redirect to the login page after logout
+     */
     @GetMapping("/logout")
     public String logout() {
         authenticationService.logout();

@@ -1,3 +1,6 @@
+/**
+ * Base class representing common attributes for entities.
+ */
 package org.example.movieapp.model;
 
 import jakarta.persistence.GeneratedValue;
