@@ -9,11 +9,19 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 import java.util.Objects;
 
+/**
+ * Configuration class for setting up the data source.
+ */
 @Configuration
 public class DataSourceConfiguration {
     @Autowired
     Environment env;
 
+    /**
+     * Configures the data source bean.
+     *
+     * @return the configured data source
+     */
     @Bean
     public DataSource dataSource(){
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -21,16 +29,4 @@ public class DataSourceConfiguration {
         dataSource.setUrl(Objects.requireNonNull(env.getProperty("url")));
         return dataSource;
     }
-//    @Bean
-//    public DataSource dataSource(){
-//        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        try {
-//            dataSource.setDriverClassName("org.sqlite.JDBC");
-//            dataSource.setUrl("jdbc:sqlite:MovieApp.db");
-//            return dataSource;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 }

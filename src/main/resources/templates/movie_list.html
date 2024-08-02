@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie List</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .image-dark-bg {
+            background: #000;
+        }
+        .image-dark-bg svg image {
+            opacity: 0.6;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit to 3 lines */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="container fixed-top">
+    <header class="w-100 bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
+        </ul>
+        <div class="col-md-3 text-end">
+            <div id="authUserDiv">
+                <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar rounded-circle" style="width: 45px" alt="user profile image">
+                <a type="button" href="/login" id="authUserName" class="btn me-2 text-decoration-underline"></a>
+                <a type="button" href="/login" id="logout" class="btn btn-outline-primary me-2">Log out</a>
+            </div>
+            <div id="noUserDiv">
+                <a type="button" href="/login" class="btn btn-outline-primary me-2">Login</a>
+                <a type="button" href="/login" class="btn btn-primary">Sign-up</a>
+            </div>
+            <div id="adminHeaderPart" hidden>
+                <a type="button" href="/settings" class="btn btn-primary">Settings</a>
+            </div>
+        </div>
+    </header>
+</div>
+<main>
+
+    <section class="py-5 text-center container" style="padding-top: 70px">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Movies Album</h1>
+                <p class="lead text-muted">OOP project by Vladyslav Pilkevych</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <h1>Movie Filter</h1>
+            <div class="mb-3">
+                <label for="filterSelect" class="form-label">Filter By:</label>
+                <select class="form-select" id="filterSelect">
+                    <option value="none">No Filters</option>
+                    <option value="date">Date</option>
+                    <option value="rate">Rate</option>
+                    <option value="popularity">Popularity</option>
+                </select>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div th:each="movie : ${movies}" class="col">
+                    <div class="card shadow-sm">
+                        <div class="image-dark-bg">
+
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c"/>
+                                <th:block th:if="${movie.image != null}">
+                                <image th:href="${movie.image}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
+                                </th:block>
+                                <th:block th:unless="${movie.image != null}">
+                                </th:block>
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em" th:text="${movie.title}"></text>
+                            </svg>
+
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${movie.description}"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="@{/movies/?id={id}(id=${movie.id})}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
+                                    <p th:text="${movie.id}" class="movieId" hidden></p>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden>Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" hidden>Delete</button>
+                                </div>
+                                <small class="text-muted" th:text="${movie.year}"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Movie Image</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editImageForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Choose Image:</label>
+                                    <input type="file" class="form-control" id="image" name="image">
+                                </div>
+                                <input type="hidden" id="movieIdInput">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveImageBtn">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="/add/movie" id="addMovieForm" method="post" hidden>
+                <h2>Add movie</h2>
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title" class="form-control"><br>
+                <label for="year">Year:</label><br>
+                <input type="number" id="year" name="year" class="form-control"><br>
+                <label for="description">Description:</label><br>
+                <textarea type="text" id="description" name="description" class="form-control"></textarea><br>
+                <input type="submit" value="Create" class="form-control btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted py-5">
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+        </p>
+        <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+        <p class="mb-0">New to Bootstrap? <a href="/static">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+</footer>
+
+
+<script src="/js/authentication.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/admin.js"></script>
+<script>
+    if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
+        const deleteUsersButtons = [...document.getElementsByClassName("btn-outline-danger")];
+        const addMovieForm = document.getElementById("addMovieForm");
+        addMovieForm.removeAttribute("hidden");
+        deleteUsersButtons.forEach((btn) => {
+            btn.removeAttribute("hidden");
+            btn.addEventListener("click", function (event) {
+                let parentDiv = event.target.closest("div");
+                let movieId = parentDiv.querySelector(".movieId").textContent;
+                new Promise((resolve, reject) => {
+                    fetch('/delete/movie', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(Number(movieId))
+                    })
+                        .then(response => {
+                            console.log(response)
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                console.log('Error removing movie:', response.statusText);
+                            }
+                        })
+                        .catch(error => {
+                            console.log('Error removing movie:', error);
+                        });
+                });
+            });
+        });
+
+        const editImageButtons = [...document.getElementsByClassName("btn-outline-primary")];
+        const saveImageBtn = document.getElementById('saveImageBtn');
+        const editImageForm = document.getElementById('editImageForm');
+        const movieIdInput = document.getElementById('movieIdInput');
+
+        editImageButtons.forEach(btn => {
+            btn.removeAttribute("hidden");
+            btn.addEventListener('click', function() {
+                btn.removeAttribute("hidden");
+                const movieId = btn.parentElement.querySelector('.movieId').textContent;
+                movieIdInput.value = movieId;
+            });
+        });
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    console.log(reader.result);
+                    resolve(reader.result);
+                };
+                reader.onerror = function (error) {
+                    reject(error);
+                };
+            });
+        }
+
+        saveImageBtn.addEventListener('click', function() {
+            const formData = new FormData(editImageForm);
+            const movieId = movieIdInput.value;
+            formData.append("movieId", movieId);
+
+            console.log(formData.get("image"));
+            // console.log(getBase64(formData.get("image")));
+            getBase64(formData.get("image"))
+                .then(base64Data => {
+                    console.log("base64Data:", base64Data);
+                    fetch(`/add/image/${movieId}`, {
+                        method: 'POST',
+                        body: base64Data
+                    });
+                })
+                    .then(response => {
+                        console.log(response);
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Error saving image:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving image:', error);
+                    });
+            });
+    }
+
+    // select
+    const filterSelect = document.getElementById('filterSelect');
+    filterSelect.addEventListener('change', function() {
+        const selectedFilter = filterSelect.value;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/movies?filter=' + selectedFilter, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(response, 'text/html');
+                const movieListContainer = document.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                const newMovieList = doc.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+                movieListContainer.innerHTML = newMovieList.innerHTML;
+                const newUrl = '/movies?filter=' + selectedFilter;
+                history.pushState({ path: newUrl }, '', newUrl);
+                if (adminLogged && adminLogged?.length > 0 && adminLogged === "admin") {
+                    const deleteUsersButtons = [...document.getElementsByClassName("btn-outline-danger")];
+                    deleteUsersButtons.forEach((btn) => {
+                        btn.removeAttribute("hidden");
+                    });
+
+                    const editImageButtons = [...document.getElementsByClassName("btn-outline-primary")];
+
+                    editImageButtons.forEach(btn => {
+                        btn.removeAttribute("hidden");
+                    });
+                }
+            } else {
+                console.error('Request failed. Status: ' + xhr.status);
+            }
+        };
+        xhr.send();
+    });
+
+</script>
+
+</body>
+</html>
