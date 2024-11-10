@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -52,20 +49,26 @@ public class AdminController {
         return "admin_settings";
     }
 
-    /**
-     * Remove a user by ID.
-     *
-     * @param userId ID of the user to be removed
-     * @return Redirect to the admin settings page
-     */
-    @PostMapping("/delete/user")
-    public String removeUser(@RequestBody String userId) {
-        Long userIdLong = Long.parseLong(userId);
-        new Thread(() -> {
-            authenticationService.removeUserById(userIdLong);
-        }).start();
-        return "redirect:/settings";
-    }
+//    /**
+//     * Remove a user by ID.
+//     *
+//     * @param userId ID of the user to be removed
+//     * @return Redirect to the admin settings page
+//     */
+//    @PostMapping("/delete/user")
+//    public String removeUser(@RequestBody String userId) {
+//        Long userIdLong = Long.parseLong(userId);
+//        new Thread(() -> {
+//            authenticationService.removeUserById(userIdLong);
+//        }).start();
+//        return "redirect:/settings";
+//    }
+@PostMapping("/delete/user")
+public String removeUser(@RequestParam Long userId) {
+    authenticationService.removeUserById(userId);
+    return "redirect:/settings";
+}
+
 
     /**
      * Remove a movie by ID.
