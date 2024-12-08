@@ -1,244 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+<html lang="en" data-bs-theme="dark">
+<head><script src="/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Sign in</title>
 
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/sign-in.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home-common.css">
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-
-
-    <link href="/css/signin.css" rel="stylesheet">
+    <!-- Favicons -->
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="icon" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="icon" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 </head>
-<script>
-    localStorage.removeItem('user');
-    localStorage.removeItem('admin');
-</script>
-<body style="display: flex; justify-content: center">
-<div class="container fixed-top">
-    <header class="bg-white d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="/movies" class="nav-link px-2 link-secondary">Home</a></li>
-        </ul>
 
-        <div class="col-md-3 text-end">
-        </div>
-    </header>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+    </symbol>
+    <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+    </symbol>
+    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+    </symbol>
+    <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+    </symbol>
+</svg>
+<div th:if="${param.accountDeleted}" class="alert alert-success">
+    Account was successfully deleted.
 </div>
-<main class="m-v-40">
-    <ul class="nav nav-tabs tabs" role="tablist">
-        <li class="nav-item w-50" style="cursor: pointer">
-            <p data-tab-name="login" class="nav-link active">Login</p>
+<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+            id="bd-theme"
+            type="button"
+            aria-expanded="false"
+            data-bs-toggle="dropdown"
+            aria-label="Toggle theme (auto)">
+        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+                Light
+                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
         </li>
-        <li class="nav-item w-50" style="cursor: pointer">
-            <p data-tab-name="sign" class="nav-link" role="tab">Sign In</p>
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+                Dark
+                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
         </li>
-    </ul>
-    <ul class="tab-content pt-5 tabs-content" id="tab-content">
-        <li data-tab-text="login" class="tab-pane tab-1 active">
-            <div class="container">
-                <form id="loginForm">
-                    <h1 class="h3 mb-3 fw-normal">Login</h1>
-                    <div class="form-floating mt-2 mb-2">
-                        <input type="text" class="form-control" id="floatingInputLogin" placeholder="username">
-                        <label for="floatingInputLogin">Username</label>
-                    </div>
-                    <div class="form-floating mt-2 mb-2">
-                        <input type="password" class="form-control" id="floatingPasswordLogin" placeholder="password">
-                        <label for="floatingPasswordLogin">Password</label>
-                    </div>
-                    <p class="list-group-item list-group-item-action list-group-item-danger p-2" hidden id="errorAuthMessage">Username or password is incorrect</p>
-                    <button class="w-100 btn btn-lg btn-primary" id="submitLogin" disabled type="button">Login</button>
-                    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-                </form>
-            </div>
-        </li>
-        <li data-tab-text="sign" class="tab-pane tab-2">
-            <form id="signInForm">
-                <h1 class="h3 mb-3 fw-normal">Sign in</h1>
-                <div class="form-floating mt-2 mb-2">
-                    <input type="text" class="form-control" id="floatingInputNameSignIn" placeholder="username">
-                    <label for="floatingInputNameSignIn">Username</label>
-                </div>
-                <div class="form-floating mt-2 mb-2">
-                    <input type="email" class="form-control" id="floatingInputEmailSignIn" placeholder="name@example.com">
-                    <label for="floatingInputEmailSignIn">Email address</label>
-                </div>
-                <div class="form-floating mt-2 mb-2">
-                    <input type="password" class="form-control" id="floatingPasswordSignIn" placeholder="Password">
-                    <label for="floatingPasswordSignIn">Password</label>
-                </div>
-                <button class="w-100 btn btn-lg btn-primary" disabled id="submitSignIn" type="button">Create account</button>
-                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-            </form>
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
+                Auto
+                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
         </li>
     </ul>
+</div>
 
+<main class="form-signin w-100 m-auto">
+    <form th:action="@{/auth/login}" method="post">
+
+        <h2 class="h3 mb-3 fw-normal" style="color: #dc3545" th:if="${param.error}">Invalid email and password</h2>
+        <h2 class="h3 mb-3 fw-normal" style="color: #0d6efd" th:if="${param.logout}">You have been logged out</h2>
+
+        <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+
+        <div class="form-floating">
+            <input name="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" autocomplete="off" required>
+            <label for="floatingInput">Email address</label>
+        </div>
+
+        <div class="form-floating">
+            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off" required>
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="form-check" style="margin-bottom: 10px">
+            <input name="remember-me" type="checkbox" id="rememberMe" class="form-check-input"/>
+            <label for="rememberMe" class="form-check-label">Remember me</label>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    </form>
+
+    <p>
+        <a href="./register">
+            Register
+        </a>
+    </p>
 </main>
-<script>
-    // tabs:
-    const tabs = document.querySelector('.tabs');
-    const text = document.querySelectorAll('.tabs-content li');
-    tabs.addEventListener('click', function (event) {
-        event.target.closest('ul').querySelector('.active').classList.remove('active');
-        event.target.classList.add('active');
-        const target = event.target.dataset.tabName;
-        text.forEach(item => {
-            item.classList.remove('active');
-            if (target === item.dataset.tabText) {
-                item.classList.add('active');
-            }
-        })
-    })
-
-    // validation login
-    const usernameLogin = document.getElementById("floatingInputLogin");
-    const passwordLogin = document.getElementById("floatingPasswordLogin");
-    const submitLoginBtn = document.getElementById("submitLogin");
-    const loginForm = document.getElementById('loginForm');
-    const loginFormInputs = loginForm.querySelectorAll('input');
-    function submitLoginForm(formData) {
-        formData.operation = "login";
-        return new Promise((resolve, reject) => {
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    console.log(response);
-                    if (response?.status === 200) {
-                        return response.json();
-                    } else {
-                        document.getElementById("errorAuthMessage")?.removeAttribute("hidden");
-                        throw new Error("Error during login!");
-                    }
-                })
-                .then(data => {
-                    console.log(data);
-                    if (!data?.admin && formData?.username) {
-                        localStorage.setItem("user", formData?.username);
-                    } else {
-                        localStorage.removeItem('user');
-                        localStorage.setItem("admin", "admin");
-                    }
-                    window.location.pathname = "/movies";
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        });
-    }
-    function toggleSubmitLogin() {
-        if (usernameLogin?.value?.length > 0 && passwordLogin?.value?.length > 0) {
-            submitLoginBtn.removeAttribute('disabled');
-        } else {
-            submitLoginBtn.setAttribute('disabled', true);
-        }
-    }
-    loginFormInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            toggleSubmitLogin();
-        });
-    });
-    submitLoginBtn.addEventListener('click', function() {
-        const formData = new FormData(loginForm);
-        formData.username = usernameLogin?.value;
-        formData.password = passwordLogin?.value;
-        if(!submitLoginBtn.disable) {
-            submitLoginForm(formData)
-                .then(responseData => {
-                    console.log('Form submitted successfully');
-                })
-                .catch(error => {
-                    console.log('Error submitting form:', error);
-                });
-        }
-    });
-
-    // validation signIn
-    function submitSignInForm(formData) {
-        console.log(formData);
-        formData.operation = "signIn";
-        return new Promise((resolve, reject) => {
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    console.log(response);
-                    if (response?.status === 200 && formData?.username) {
-                        localStorage.setItem('user', formData?.username);
-                        window.location.pathname = "/movies";
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        });
-    }
-    const usernameSignIn = document.getElementById("floatingInputNameSignIn");
-    const emailSignIn = document.getElementById("floatingInputEmailSignIn");
-    const passwordSignIn = document.getElementById("floatingPasswordSignIn");
-    const submitSignInBtn = document.getElementById("submitSignIn");
-    const signInForm = document.getElementById('signInForm');
-    const signInFormInputs = signInForm.querySelectorAll('input');
-    function toggleSubmitSignIn() {
-        if (usernameSignIn?.value?.length > 0 && emailSignIn?.value?.length > 0 && passwordSignIn?.value?.length) {
-            submitSignInBtn.removeAttribute('disabled');
-        } else if (usernameSignIn?.value?.length > 0 && passwordSignIn?.value?.length > 0) {
-            if (usernameSignIn.value.toLowerCase() === 'admin') {
-                submitSignInBtn.setAttribute('disabled', true);
-            } else {
-                submitSignInBtn.removeAttribute('disabled');
-            }
-        } else {
-            submitSignInBtn.setAttribute('disabled', true);
-        }
-    }
-    signInFormInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            toggleSubmitSignIn();
-        });
-    });
-    submitSignInBtn.addEventListener('click', function() {
-        const formData = new FormData(signInForm);
-        formData.username = usernameSignIn?.value;
-        formData.password = passwordSignIn?.value;
-        formData.email = emailSignIn?.value;
-        if(!submitSignInBtn.disable) {
-            submitSignInForm(formData)
-                .then(responseData => {
-                    console.log('Form submitted successfully');
-                })
-                .catch(error => {
-                    console.log('Error submitting form:', error);
-                });
-        }
-    });
-
-</script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
