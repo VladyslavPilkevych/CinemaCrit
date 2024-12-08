@@ -1,0 +1,9 @@
+com.cinemacrit.platform
+com.cinemacrit.platform.configs
+com.cinemacrit.platform.controllers
+com.cinemacrit.platform.models
+com.cinemacrit.platform.ooprequirements
+com.cinemacrit.platform.repositories
+com.cinemacrit.platform.roles
+com.cinemacrit.platform.services
+com.cinemacrit.platform.utils

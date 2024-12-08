@@ -7,6 +7,7 @@
 //import com.cinemacrit.platform.roles.Roles;
 //import com.cinemacrit.platform.services.UserDetailsPrincipal;
 //import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.InjectMocks;
@@ -68,6 +69,7 @@
 //        Mockito.when(movieRepository.findAll()).thenReturn(Collections.emptyList());
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    void testHomePageWhenAuthenticated() throws Exception {
 //        mockMvc.perform(get("/home"))

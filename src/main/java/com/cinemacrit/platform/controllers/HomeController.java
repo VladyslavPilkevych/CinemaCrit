@@ -68,7 +68,7 @@ public class HomeController {
         }
         model.addAttribute("movies", foundedMovies.isEmpty() ?  movieRepository.findAll() : new ArrayList<>(foundedMovies));
 
-        if (userDetailsPrincipal.getRole() == Roles.ADMIN) {
+        if (userDetailsPrincipal.getRole() == Roles.ADMIN || userDetailsPrincipal.getRole() == Roles.SUPER) {
             model.addAttribute("movie", new Movie());
         }
 

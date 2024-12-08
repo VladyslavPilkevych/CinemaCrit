@@ -3,6 +3,7 @@
 //import com.cinemacrit.platform.models.SimpleUser;
 //import com.cinemacrit.platform.services.CustomUserDetailsService;
 //import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;
@@ -34,18 +35,21 @@
 //        mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    void testRegisterPageWhenAuthenticated() throws Exception {
 //        mockMvc.perform(get("/auth/register"))
 //                .andExpect(redirectedUrl("/home"));
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    void testRegisterPageWhenNotAuthenticated() throws Exception {
 //        mockMvc.perform(get("/auth/register"))
 //                .andExpect(view().name("register"));
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    void testRegisterPost() throws Exception {
 //        SimpleUser user = new SimpleUser();

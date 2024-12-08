@@ -1,6 +1,7 @@
 //package com.cinemacrit.platform.controllers;
 //
 //import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.Mock;
 //import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -33,6 +34,7 @@
 //        mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    public void testIndex_UnauthenticatedUser() throws Exception {
 //        authentication = mock(AnonymousAuthenticationToken.class);
@@ -43,6 +45,7 @@
 //                .andExpect(MockMvcResultMatchers.view().name("about"));
 //    }
 //
+//    @Disabled("Test under development")
 //    @Test
 //    public void testIndex_AuthenticatedUser() throws Exception {
 //        authentication = mock(Authentication.class);
