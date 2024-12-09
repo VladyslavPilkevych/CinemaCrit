@@ -51,6 +51,7 @@ public class SecurityConfig{
                         .requestMatchers("/admin/block/*").hasAnyRole("ADMIN", "SUPER")
                         .requestMatchers("/admin/*").hasAnyRole("ADMIN", "SUPER")
                         .requestMatchers("/movie/add").hasAnyRole("ADMIN", "SUPER")
+                        .requestMatchers("/movie/edit/*").hasAnyRole("ADMIN", "SUPER")
                         .requestMatchers("/css/*").permitAll()
                         .requestMatchers("/js/*").permitAll()
                         .requestMatchers("/images/*").permitAll()

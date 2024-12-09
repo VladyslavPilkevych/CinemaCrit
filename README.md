@@ -48,7 +48,58 @@ This project uses several dependencies, including Spring Boot and other related 
 - **Java**: This project is built with **Java 21**.
 - **Spring Boot**: Version 3.2.x
 
-![image](https://github.com/user-attachments/assets/10bd4bf9-2ea2-4c66-ad7a-a948108e65ac)
+# Screenshots
 
-![image](https://github.com/user-attachments/assets/95d94ac8-9eb4-437a-b995-b3bf4b4b86df)
+## Databases
 
+![Alt text](./screenshots/db.png)
+
+## Sign In
+
+![Alt text](./screenshots/signin.png)
+
+## Registration
+
+![Alt text](./screenshots/signout.png)
+
+## Movies home page
+
+![Alt text](./screenshots/home.png)
+
+## Create movie
+
+![Alt text](./screenshots/create_movie.png)
+
+## Admin/SuperUser dashboard
+
+![Alt text](./screenshots/dashboard.png)
+
+## Admin/SuperUser blocked list
+
+![Alt text](./screenshots/blockusers.png)
+
+## Admin/SuperUser users list
+
+![Alt text](./screenshots/users.png)
+
+## Movie info
+
+![Alt text](./screenshots/movie_info.png)
+
+## Edit movie for admin/superuser
+
+![Alt text](./screenshots/edit_movie.png)
+
+## User profile settings
+
+![Alt text](./screenshots/user_settings.png)
+
+# Bonus
+
+## Javadoc
+
+![Alt text](./screenshots/javadoc.png)
+
+## Tests
+
+![Alt text](./screenshots/tests.png)

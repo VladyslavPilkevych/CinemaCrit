@@ -158,14 +158,42 @@
     </header>
 </div>
 <main class="container" style="padding-top: 70px">
+<!--    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">-->
+<!--        <div class="col-md-6 px-0">-->
+<!--            <h1 class="display-4 fst-italic" th:text="${movie.title}"></h1>-->
+<!--            <p class="lead my-3" th:text="${movie.description}"></p>-->
+<!--            <p>Year: <span th:text="${movie.year}"></span></p>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic" th:text="${movie.title}"></h1>
-            <p class="lead my-3" th:text="${movie.description}"></p>
-            <p>Year: <span th:text="${movie.year}"></span></p>
+            <!-- View Mode -->
+            <div id="viewMode" style="display: block;">
+                <h1 class="display-4 fst-italic" th:text="${movie.title}" id="movieTitle"></h1>
+                <p class="lead my-3" th:text="${movie.description}" id="movieDescription"></p>
+                <p>Year: <span th:text="${movie.year}" id="movieYear"></span></p>
+                <button class="btn btn-primary mt-3" onclick="toggleEditMode()" sec:authorize="hasAnyRole(T(com.cinemacrit.platform.roles.Roles).ADMIN.name, T(com.cinemacrit.platform.roles.Roles).SUPER.name)">Edit</button>
+            </div>
+
+            <!-- Edit Mode -->
+            <form  th:action="@{/movie/edit/{id}(id=${movie.id})}" method="post" id="editMode" style="display: none;">
+                <div class="mb-3">
+                    <label for="titleInput" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="titleInput" placeholder="Movie Title" th:placeholder="${movie.title}" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionInput" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="descriptionInput" placeholder="Movie description goes here." th:placeholder="${movie.description}" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="yearInput" class="form-label">Year</label>
+                    <input type="number" class="form-control" id="yearInput" placeholder="2023" th:placeholder="${movie.year}" name="year" required>
+                </div>
+                <button type="submit" class="btn btn-success mt-3" sec:authorize="hasAnyRole(T(com.cinemacrit.platform.roles.Roles).ADMIN.name, T(com.cinemacrit.platform.roles.Roles).SUPER.name)">Save</button>
+                <button type="button" class="btn btn-secondary mt-3" onclick="toggleEditMode()" sec:authorize="hasAnyRole(T(com.cinemacrit.platform.roles.Roles).ADMIN.name, T(com.cinemacrit.platform.roles.Roles).SUPER.name)">Cancel</button>
+            </form>
         </div>
     </div>
-
 
     <div class="row g-5">
         <div class="col-md-8">
@@ -263,6 +291,24 @@
             }
         })
     })
+
+    function toggleEditMode() {
+        const viewMode = document.getElementById('viewMode');
+        const editMode = document.getElementById('editMode');
+
+        if (viewMode.style.display === 'none') {
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+        } else {
+            viewMode.style.display = 'none';
+            editMode.style.display = 'block';
+
+            // Pre-fill the form with current data
+            document.getElementById('titleInput').value = document.getElementById('movieTitle').innerText;
+            document.getElementById('descriptionInput').value = document.getElementById('movieDescription').innerText;
+            document.getElementById('yearInput').value = document.getElementById('movieYear').innerText;
+        }
+    }
 </script>
 </body>
 </html>

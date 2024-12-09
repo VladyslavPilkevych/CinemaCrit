@@ -96,4 +96,32 @@ public class MovieController {
         model.addAttribute("dateUtils", new DateUtils());
         return "movie-page";
     }
+
+    /**
+     * Handles the submission of an edit form for a movie.
+     *
+     * This method updates an existing movie in the database with the data submitted through the form.
+     * The movie to update is identified by its ID provided in the URL path, and the updated data
+     * is passed as part of the request body.
+     *
+     * @param movieId the ID of the movie to be edited, extracted from the URL path.
+     * @param movie the updated movie data from the form, mapped to the {@link Movie} object.
+     * @return a redirect URL to the updated movie's detail page.
+     *
+     * @throws RuntimeException if a movie with the specified ID is not found in the database.
+     */
+    @PostMapping("/edit/{id}")
+    public String addReview(@PathVariable(name = "id") String movieId, @ModelAttribute Movie movie) {
+        Long movieIdLong = Long.parseLong(movieId);
+
+        Movie currentMovie = movieRepository.findById(movieIdLong).orElseThrow(() -> new RuntimeException("User not found"));
+
+        currentMovie.setTitle(movie.getTitle());
+        currentMovie.setDescription(movie.getDescription());
+        currentMovie.setYear(movie.getYear());
+
+        movieRepository.save(currentMovie);
+
+        return "redirect:/movies/?id="+movieId;
+    }
 }
